@@ -1,3 +1,5 @@
-first-service:
+bookclub:
   files:
-    - first-service/first.proto
+    - bookclub/book.proto
+    - bookclub/member.proto
+    - bookclub/bookclub.proto

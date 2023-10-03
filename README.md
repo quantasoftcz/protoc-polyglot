@@ -16,8 +16,9 @@ TODO:
 - ObjectiveC
 
 ### Getting started
-1) `alias DOCKER_RUN='docker run -it --rm -v [real path to protoc-polygot/core dir]:/workspace -v [path to proto files]$(pwd):/data protoc_polyglot_x64:1.54.3'`
-2) `DOCKER_RUN [command]`
+1) Build docker image in `docker` folder
+2) `alias DOCKER_RUN='docker run -it --rm -v [real path to protoc-polygot/core dir]:/workspace -v [path to proto files]$(pwd):/data protoc_polyglot_x64:1.54.3'`
+3) `DOCKER_RUN [command]`
 
 #### List of commands:
 - List available services: \
@@ -27,5 +28,7 @@ TODO:
   `./[language]/cli.py protoc *`
 
 #### Examples:
-`DOCKER_RUN python3 cli.py protoc` \
-`DOCKER_RUN python3 python/cli.py protoc first-service`
+`alias DOCKER_RUN='docker run -it --rm -v [real path to protoc-polygot/core dir]:/workspace -v [path to proto files]$(pwd):/data protoc_polyglot_x64:1.54.3'`
+- `DOCKER_RUN python3 cli.py protoc`
+- `DOCKER_RUN python3 python/cli.py protoc bookclub`
+- `DOCKER_RUN python3 js/cli.py protoc \*`

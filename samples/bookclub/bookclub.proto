@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package bookclub;
+
+import "bookclub/book.proto";
+import "bookclub/member.proto";
+
+service BookclubGRPC {
+  rpc GetMembers (bookclub.GetMembersRequest)   returns (bookclub.GetMembersResponse);
+}
+
+message Bookclub {
+    string name = 1;
+    repeated Member members = 2;
+    string description = 3;
+    repeated Book books = 4;
+}
+
+message GetMembersRequest{
+    int32 age_range_low = 1;
+    int32 age_range_high = 2;
+}
+
+message GetMembersResponse{
+    repeated Member members = 1;
+}

@@ -8,7 +8,7 @@ from glob import glob
 from termcolor import colored
 
 os.chdir(getdir(os.path.abspath(sys.argv[0]))) # go to dir with script
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../..'))
 from cli import *
 from generateConanFiles import generateConanFiles
 
@@ -18,7 +18,7 @@ class UI_cpp(Base_UI):
 
     def make(self, name:str, version:str=default_version):
         check_version_and_name(version, name)
-        dir_protos = os.path.abspath(pjoin(root_protos, version)) # e.g. /workspace/protos/v1
+        dir_protos = os.path.abspath(pjoin(root_protos, version)) # e.g. /workspace/samples/v1
         ret = self.compile(dir_protos, name, services_files[version][name]['files'], version)
         if ret:
             exit(ret)

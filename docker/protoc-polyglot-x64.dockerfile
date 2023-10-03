@@ -1,6 +1,4 @@
-# init: host=''; name=protoc_polyglot_x64; ver=1.54.3
-# build: docker build -t $host$name:$ver -f protoc_polyglot_x64.dockerfile .
-# push: docker push $host$name:$ver
+# build: docker build -t protoc-polyglot-x64:1.54.3 -f protoc-polyglotx64.dockerfile .
 FROM ubuntu:22.04
 
 RUN apt update &&\
