@@ -12,13 +12,13 @@ sys.path.insert(0, abspath('..'))
 from cli import *
 
 
-class UI_specific(Base_UI):
+class UI_python(Base_UI):
     protoc_plugin:str = path_python_plugin
     dir_output_base:str = join(OUTPUT_ROOT, 'python') # e.g. /workspace/output/python
 
     @staticmethod
     def _compile(name:str, files:list[str]) -> None:
-        dir_output = join(UI_specific.dir_output_base, name)
+        dir_output = UI_python.dir_output_base
 
         shutil.rmtree(dir_output, ignore_errors=True)
         os.makedirs(dir_output, exist_ok=False)

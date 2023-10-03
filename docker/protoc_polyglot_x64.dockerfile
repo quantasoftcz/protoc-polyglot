@@ -12,11 +12,16 @@ RUN pip install -U cmake
 
 ARG GRPC_VERSION=1.54.3
 ARG PROTOBUF_VERSION=3.21.12
+ARG CONAN_VERSION=2.0.10
+
+# Conan
+RUN pip install -U conan==${CONAN_VERSION} &&\
+    conan profile detect
 
 # grpc
 WORKDIR /opt
-RUN conan install --requires grpc/${GRPC_VERSION} -b=missing -of grpc --deployer direct_deploy -r conancenter &&\
-    conan install --requires protobuf/${PROTOBUF_VERSION} -b=missing -of protobuf --deployer direct_deploy -r conancenter &&\
+RUN conan install --requires protobuf/${PROTOBUF_VERSION} -b=missing -of protobuf --deployer direct_deploy -r conancenter &&\
+    conan install --requires grpc/${GRPC_VERSION} -b=missing -of grpc --deployer direct_deploy -r conancenter &&\
     mv grpc build; mv build/direct_deploy/grpc .; rm -rf build &&\
     mv protobuf build; mv build/direct_deploy/protobuf .; rm -rf build &&\
     ln -s /opt/protobuf/bin/protoc /usr/bin/protoc &&\
@@ -27,7 +32,6 @@ RUN conan install --requires grpc/${GRPC_VERSION} -b=missing -of grpc --deployer
 ARG PROTOC_JAVA_VER=1.58.0
 ARG PROTOC_JS_VER=1.4.1
 ARG PROTOC_GEN_DOC=1.5.1
-ARG CONAN_VERSION=2.0.10
 
 # protoc java
 RUN wget https://repo1.maven.org/maven2/io/grpc/protoc-gen-grpc-java/${PROTOC_JAVA_VER}/protoc-gen-grpc-java-${PROTOC_JAVA_VER}-linux-x86_64.exe &&\
@@ -46,10 +50,6 @@ RUN wget https://github.com/pseudomuto/protoc-gen-doc/releases/download/v${PROTO
     mkdir protoc-gen-doc &&\
     tar -xvf protoc-gen-doc_${PROTOC_GEN_DOC}_linux_amd64.tar.gz --directory protoc-gen-doc &&\
     mv protoc-gen-doc/protoc-gen-doc /usr/bin/
-
-# Conan
-RUN pip install -U conan==${CONAN_VERSION} &&\
-    conan profile detect
 
 # dotnet
 ENV DEBIAN_FRONTEND=noninteractive
