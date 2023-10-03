@@ -10,7 +10,7 @@ class UI_lang(Base_UI):
 
     @staticmethod
     def _compile(name:str, files:list[str]) -> None:
-        dir_output = join(UI_lang.dir_output_base, name)
+        dir_output = UI_lang.dir_output_base
 
         shutil.rmtree(dir_output, ignore_errors=True)
         os.makedirs(dir_output, exist_ok=False)

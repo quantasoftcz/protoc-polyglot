@@ -31,4 +31,4 @@ TODO:
 `alias DOCKER_RUN='docker run -it --rm -v $(pwd)/tools:/workspace -v $(pwd)/output:/data/output -v $(pwd)/protos:/data/protos protoc-polyglot-x64:1.54.3'`
 - `DOCKER_RUN ./cli.py protoc`
 - `DOCKER_RUN ./python/cli.py protoc bookclub`
-- `DOCKER_RUN ./js/cli.py protoc bookclub`
+- `DOCKER_RUN ./js/cli.py protoc \*`

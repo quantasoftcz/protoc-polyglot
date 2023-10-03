@@ -5,7 +5,7 @@ package bookclub;
 import "bookclub/book.proto";
 import "bookclub/member.proto";
 
-service SubjectFaceComparer {
+service BookclubGRPC {
   rpc GetMembers (bookclub.GetMembersRequest)   returns (bookclub.GetMembersResponse);
 }
 

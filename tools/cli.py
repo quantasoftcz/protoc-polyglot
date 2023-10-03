@@ -23,7 +23,7 @@ def get_service_files(name:str) -> dict[str, list[str]]:
         data = yaml.safe_load(file)
         
         if name=="*":
-            return {name: data[n]['files'] for n in data}
+            return {n: data[n]['files'] for n in data}
         else:
             return {name: data[name]['files']}
 
@@ -45,7 +45,7 @@ class Base_UI:
             print("ERROR: Run this command in selected language subfolder")
             exit(1)
         
-        services = get_service_files(name, )
+        services = get_service_files(name)
         
         for name, files in services.items():
             self._compile(name, files)
