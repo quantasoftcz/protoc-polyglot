@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package bookclub;
+
+import "bookclub/book.proto";
+
+message Member{
+    string ID = 1;
+    int32 age = 2;
+    repeated Book read_books = 3;
+    map<string, float> ratings = 4; // book ratings, bookID is key
+}

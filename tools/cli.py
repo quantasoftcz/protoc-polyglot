@@ -1,10 +1,7 @@
 #!/usr/bin/python3
 import os, sys, shutil, yaml
-from os.path import dirname as dirname
-from os.path import basename as basename
-from os.path import abspath as abspath
-from os.path import join as join
-from os import chdir as chdir
+from os.path import dirname, basename, abspath, join
+from os import chdir
 from fire import Fire
 
 path_cpp_plugin = '/usr/bin/grpc_cpp_plugin'
@@ -19,7 +16,7 @@ ROOT_PROTOS = join(DATA_DIR, 'protos')
 OUTPUT_ROOT = join(DATA_DIR, 'output')
 DOC_OUTPUT_DIR = join(DATA_DIR, 'doc-output')
 
-services_yaml = join(DATA_DIR, 'services.yml')
+services_yaml = join(ROOT_PROTOS, 'services.yml')
 
 def get_service_files(name:str) -> dict[str, list[str]]:
     with open(services_yaml, 'r') as file:

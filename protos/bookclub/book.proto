@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bookclub;
+
+import "google/protobuf/timestamp.proto";
+
+enum GENRE {
+    GENRE_COMEDY = 0;
+    GENRE_ROMANCE = 1;
+    GENRE_DETECTIVE = 2;
+}
+
+message Book {
+    string bookname = 1;
+    string author_name = 2;
+    int32 num_of_pages = 3;
+    google.protobuf.Timestamp publication_date = 4;
+    repeated GENRE genres = 5;
+    string bookID = 6;
+}

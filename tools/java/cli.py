@@ -7,7 +7,7 @@ from fire import Fire
 from glob import glob
 
 chdir(dirname(abspath(sys.argv[0]))) # go to dir with script
-sys.path.insert(0, abspath('..'))
+sys.path.insert(0, abspath('../..'))
 from cli import *
 
 

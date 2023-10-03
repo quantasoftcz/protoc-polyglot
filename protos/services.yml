@@ -1,0 +1,5 @@
+bookclub:
+  files:
+    - bookclub/book.proto
+    - bookclub/member.proto
+    - bookclub/bookclub.proto
