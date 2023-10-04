@@ -5,19 +5,19 @@ from cli import *
 
 
 class Lang_UI(Base_UI):
-    protoc_plugin:str = path_js_plugin
-    dir_output:str = join(OUTPUT_ROOT, 'js') # e.g. /workspace/output/python
+    protoc_plugin:str = path_rust_plugin
+    dir_output:str = join(OUTPUT_ROOT, 'rust') # e.g. /workspace/output/python
 
     @staticmethod
     def _compile(files:list[str]) -> None:
         shutil.rmtree(Lang_UI.dir_output, ignore_errors=True)
         os.makedirs(Lang_UI.dir_output, exist_ok=False)
-        
-        com = f"""protoc \
-        -I={ROOT_PROTOS} \
-        {" ".join(files)} \
-        --js_out=import_style=commonjs:{Lang_UI.dir_output} \
-        --grpc-web_out=import_style=commonjs,mode=grpcwebtext:{Lang_UI.dir_output}"""
+
+        com = f"""/usr/bin/protoc \
+        -I {ROOT_PROTOS} \
+        --plugin=protoc-gen-rust={Lang_UI.protoc_plugin} \
+        --rust_out={Lang_UI.dir_output} \
+        {" ".join(files)}"""
         
         print(com)
         os.system(com)

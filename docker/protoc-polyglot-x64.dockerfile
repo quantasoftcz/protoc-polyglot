@@ -1,20 +1,16 @@
 # build: docker build -t protoc-polyglot-x64:1.54.3 -f protoc-polyglot-x64.dockerfile .
 FROM ubuntu:22.04
 
+ARG CMAKE_VERSION=3.27.6
+ARG CONAN_VERSION=2.0.10
+
 RUN apt update &&\
     apt install -y git wget g++ build-essential python3-dev python3-pip &&\
-    pip install -U fire
-
-# cmake
-RUN pip install -U cmake
+    pip install -U fire cmake==${CMAKE_VERSION} conan==${CONAN_VERSION} &&\
+    conan profile detect
 
 ARG GRPC_VERSION=1.54.3
 ARG PROTOBUF_VERSION=3.21.12
-ARG CONAN_VERSION=2.0.10
-
-# Conan
-RUN pip install -U conan==${CONAN_VERSION} &&\
-    conan profile detect
 
 # grpc
 WORKDIR /opt
@@ -56,5 +52,9 @@ RUN wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-p
     apt-get install -y apt-transport-https &&\
     apt-get update &&\
     apt-get install -y dotnet-sdk-7.0
+
+# rust
+RUN apt-get -y install cargo \
+    cargo install protobuf-codegen
 
 WORKDIR /workspace
