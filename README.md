@@ -22,10 +22,10 @@ TODO:
 
 #### List of commands:
 - List available services: \
-  `./cli.py protoc`
+  `python3 cli.py protoc`
 - Compile services: \
-  `./[language]/cli.py protoc [name]` \
-  `./[language]/cli.py protoc *`
+  `python3 [language]/cli.py protoc [name]` \
+  `python3 [language]/cli.py protoc *`
 
 #### Examples:
 `alias DOCKER_RUN='docker run -it --rm -v [real path to protoc-polygot/core-tools dir]:/workspace -v [path to proto files]$(pwd):/data protoc-polyglot-x64:1.54.3'`
