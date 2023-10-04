@@ -2,22 +2,23 @@
 import os, sys
 sys.path.insert(0, os.path.abspath('.'))
 from cli import *
+from os.path import join
+import shutil
 
 
 class UI_lang(Base_UI):
     protoc_plugin:str = path_python_plugin
-    dir_output_base:str = join(OUTPUT_ROOT, 'python') # e.g. /workspace/output/python
+    language:str = 'python'
 
     @staticmethod
-    def _compile(name:str, files:list[str]) -> None:
-
-        dir_output = UI_lang.dir_output_base
+    def _compile(dir_protos:str, files:list[str]) -> None:
+        dir_output = join(dir_protos, "output/python/")
 
         shutil.rmtree(dir_output, ignore_errors=True)
         os.makedirs(dir_output, exist_ok=False)
 
         com = f"""/usr/bin/protoc \
-        -I {ROOT_PROTOS} \
+        -I {dir_protos} \
         --plugin=protoc-gen-grpc={UI_lang.protoc_plugin} \
         --grpc_out={dir_output} \
         --python_out={dir_output} \

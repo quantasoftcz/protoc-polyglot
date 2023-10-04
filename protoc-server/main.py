@@ -70,5 +70,5 @@ async def compile_type(language: str, file: UploadFile):
     return FileResponse(zip_file, media_type='application/zip', filename="output.zip", background=BackgroundTask(clean_dir, dir_name))
 
 
-# if __name__ == "__main__":
-#     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
