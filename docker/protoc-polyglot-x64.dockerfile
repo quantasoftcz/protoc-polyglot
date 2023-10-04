@@ -1,4 +1,4 @@
-# build: docker build -t protoc-polyglot-x64:1.54.3 -f protoc-polyglotx64.dockerfile .
+# build: docker build -t protoc-polyglot-x64:1.54.3 -f protoc-polyglot-x64.dockerfile .
 FROM ubuntu:22.04
 
 RUN apt update &&\
