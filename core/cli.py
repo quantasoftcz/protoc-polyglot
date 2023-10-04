@@ -13,7 +13,6 @@ path_plugin_doc = '/usr/bin/protoc-gen-doc'
 
 DATA_DIR = '/data'
 ROOT_PROTOS = DATA_DIR
-OUTPUT_ROOT = join(DATA_DIR, 'output')
 DOC_OUTPUT_DIR = join(DATA_DIR, 'doc-output')
 
 services_yaml = join(ROOT_PROTOS, 'services.yml')
@@ -27,7 +26,7 @@ def get_service_files(name:str) -> dict[str, list[str]]:
         else:
             return {name: data[name]['files']}
 
-def get_files(dir: str):
+def get_files_from_directory(dir: str):
     proto_files = []
     for root, directories, files in os.walk(dir):
         for filename in files:
@@ -59,7 +58,7 @@ class Base_UI:
             exit(1)
 
         dir_protos = os.path.abspath(dir)
-        files = get_files(dir_protos)
+        files = get_files_from_directory(dir_protos)
         self._compile(dir_protos, files)
         dir_output = join(dir_protos, "output", self.language)
         return zip_directory(dir_output)
@@ -76,7 +75,7 @@ class Base_UI:
         services = get_service_files(name)
         
         for name, files in services.items():
-            self._compile(name, files)
+            self._compile(DATA_DIR, files)
 
 if __name__ == '__main__':
     Fire(Base_UI)
