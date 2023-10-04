@@ -63,8 +63,4 @@ RUN apt install -y golang-go &&\
     go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 ENV PATH="$PATH:/root/go/bin"
 
-# rust
-RUN apt-get -y install cargo \
-    cargo install protobuf-codegen
-
 WORKDIR /workspace
