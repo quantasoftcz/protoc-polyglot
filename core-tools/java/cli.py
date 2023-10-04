@@ -1,39 +1,26 @@
-import os, sys, shutil
-from os.path import dirname as dirname
-from os.path import basename as basename
-from os.path import abspath as abspath
-from os.path import join as join
-from fire import Fire
-from glob import glob
-
-chdir(dirname(abspath(sys.argv[0]))) # go to dir with script
-sys.path.insert(0, abspath('../..'))
+#!/usr/bin/python3
+import os, sys
+sys.path.insert(0, os.path.abspath('.'))
 from cli import *
 
 
-class UI_specific(Base_UI):
-    protoc_plugin:str = path_js_plugin
-    dir_output_base:str = pjoin(OUTPUT_ROOT, 'java')
-
-    # def compile(self, name, files):
-    #     dir_output = pjoin(UI_python.dir_output_base, name)
-    #     os.makedirs(dir_output, exist_ok=True)
-    #     com = f'protoc -I {dir_protos} --plugin=protoc-gen-grpc={path_python_plugin} --grpc_out={dir_output} --python_out={dir_output} {" ".join(files)}'
-    #     print(com)
-    #     os.system(com)
+class UI_lang(Base_UI):
+    protoc_plugin:str = path_java_plugin
+    dir_output:str = join(OUTPUT_ROOT, 'java')
 
     @staticmethod
-    def _compile(name, files):
-        # files = glob(pjoin(dir_protos, dir, '*.proto'))
-        # java_out = pjoin(UI_java.dir_output_base, dir)
-        java_out = pjoin(UI_specific.dir_output_base, name)
-        os.makedirs(java_out, exist_ok=True)
-        print(f'mkdir {java_out}')
+    def _compile(files):
+        os.makedirs(UI_lang.dir_output, exist_ok=True)
+        print(f'mkdir {UI_lang.dir_output}')
 
-        # grpc_out = f'--grpc_out={java_out}' if gen_grpc else ''
-        com = f'protoc -I {dir_protos} --plugin=protoc-gen-grpc_java={path_java_plugin} --grpc_java_out={java_out} --java_out={java_out} {" ".join(files)}'
+        com = f'protoc -I {ROOT_PROTOS} \
+        --plugin=protoc-gen-grpc_java={UI_lang.protoc_plugin} \
+        --grpc_java_out={UI_lang.dir_output} \
+        --java_out={UI_lang.dir_output} \
+        {" ".join(files)}'
+        
         print(com)
         os.system(com)
 
 if __name__ == '__main__':
-    Fire(UI_specific)
+    Fire(UI_lang)

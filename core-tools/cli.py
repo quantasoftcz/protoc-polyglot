@@ -9,10 +9,11 @@ path_python_plugin = '/usr/bin/grpc_python_plugin'
 path_csharp_plugin = '/usr/bin/grpc_csharp_plugin'
 path_java_plugin = '/usr/bin/protoc-gen-grpc-java'
 path_js_plugin = '/usr/bin/protoc-gen-grpc-web'
+path_rust_plugin = '/root/.cargo/bin/protoc-gen-rust'
 path_plugin_doc = '/usr/bin/protoc-gen-doc'
 
 DATA_DIR = '/data'
-ROOT_PROTOS = DATA_DIR
+ROOT_PROTOS = join(DATA_DIR, 'protos')
 OUTPUT_ROOT = join(DATA_DIR, 'output')
 DOC_OUTPUT_DIR = join(DATA_DIR, 'doc-output')
 
@@ -48,7 +49,7 @@ class Base_UI:
         services = get_service_files(name)
         
         for name, files in services.items():
-            self._compile(name, files)
+            self._compile(files)
 
 if __name__ == '__main__':
     Fire(Base_UI)

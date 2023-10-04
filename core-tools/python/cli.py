@@ -6,21 +6,18 @@ from cli import *
 
 class UI_lang(Base_UI):
     protoc_plugin:str = path_python_plugin
-    dir_output_base:str = join(OUTPUT_ROOT, 'python') # e.g. /workspace/output/python
+    dir_output:str = join(OUTPUT_ROOT, 'python') # e.g. /workspace/output/python
 
     @staticmethod
-    def _compile(name:str, files:list[str]) -> None:
-
-        dir_output = UI_lang.dir_output_base
-
-        shutil.rmtree(dir_output, ignore_errors=True)
-        os.makedirs(dir_output, exist_ok=False)
+    def _compile(files:list[str]) -> None:
+        shutil.rmtree(UI_lang.dir_output, ignore_errors=True)
+        os.makedirs(UI_lang.dir_output, exist_ok=False)
 
         com = f"""/usr/bin/protoc \
         -I {ROOT_PROTOS} \
         --plugin=protoc-gen-grpc={UI_lang.protoc_plugin} \
-        --grpc_out={dir_output} \
-        --python_out={dir_output} \
+        --grpc_out={UI_lang.dir_output} \
+        --python_out={UI_lang.dir_output} \
         {" ".join(files)}"""
         
         print(com)

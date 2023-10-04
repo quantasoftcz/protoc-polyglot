@@ -6,20 +6,18 @@ from cli import *
 
 class UI_lang(Base_UI):
     protoc_plugin:str = path_js_plugin
-    dir_output_base:str = join(OUTPUT_ROOT, 'js') # e.g. /workspace/output/python
+    dir_output:str = join(OUTPUT_ROOT, 'js') # e.g. /workspace/output/python
 
     @staticmethod
-    def _compile(name:str, files:list[str]) -> None:
-        dir_output = UI_lang.dir_output_base
-
-        shutil.rmtree(dir_output, ignore_errors=True)
-        os.makedirs(dir_output, exist_ok=False)
+    def _compile(files:list[str]) -> None:
+        shutil.rmtree(UI_lang.dir_output, ignore_errors=True)
+        os.makedirs(UI_lang.dir_output, exist_ok=False)
         
         com = f"""protoc \
         -I={ROOT_PROTOS} \
         {" ".join(files)} \
-        --js_out=import_style=commonjs:{dir_output} \
-        --grpc-web_out=import_style=commonjs,mode=grpcwebtext:{dir_output}"""
+        --js_out=import_style=commonjs:{UI_lang.dir_output} \
+        --grpc-web_out=import_style=commonjs,mode=grpcwebtext:{UI_lang.dir_output}"""
         
         print(com)
         os.system(com)
