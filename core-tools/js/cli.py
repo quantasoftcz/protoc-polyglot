@@ -5,7 +5,7 @@ from cli import *
 
 
 class Lang_UI(Base_UI):
-    protoc_plugin:str = path_js_plugin
+    protoc_plugin:str = plugin_path_js
     dir_output:str = join(OUTPUT_ROOT, 'js') # e.g. /workspace/output/python
 
     @staticmethod

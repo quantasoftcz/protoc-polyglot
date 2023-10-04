@@ -1,9 +1,9 @@
 ### Compile Protocol Buffers files into any of these languages
 Supported languages: \
-Python, JavaScript, C++, Rust, Java
+Python, JavaScript, C++, Rust, Java, Go
 
 TODO: \
-C#, Go, PHP, Ruby, ObjectiveC
+C#, PHP, Ruby, ObjectiveC
 
 ### Getting started
 1) Build prepared [docker image](docker/protoc-polyglot-x64.dockerfile)

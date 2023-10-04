@@ -4,20 +4,21 @@ from os.path import dirname, basename, abspath, join
 from os import chdir
 from fire import Fire
 
-path_cpp_plugin = '/usr/bin/grpc_cpp_plugin'
-path_python_plugin = '/usr/bin/grpc_python_plugin'
-path_csharp_plugin = '/usr/bin/grpc_csharp_plugin'
-path_java_plugin = '/usr/bin/protoc-gen-grpc-java'
-path_js_plugin = '/usr/bin/protoc-gen-grpc-web'
-path_rust_plugin = '/root/.cargo/bin/protoc-gen-rust'
-path_plugin_doc = '/usr/bin/protoc-gen-doc'
+plugin_path_cpp     = '/usr/bin/grpc_cpp_plugin'
+plugin_path_python  = '/usr/bin/grpc_python_plugin'
+plugin_path_csharp  = '/usr/bin/grpc_csharp_plugin'
+plugin_path_java    = '/usr/bin/protoc-gen-grpc-java'
+plugin_path_js      = '/usr/bin/protoc-gen-grpc-web'
+plugin_path_rust    = '/root/.cargo/bin/protoc-gen-rust'
+plugin_path_go      = '/root/go/bin/protoc-gen-go'
+plugin_path_doc     = '/usr/bin/protoc-gen-doc'
 
-DATA_DIR = '/data'
-ROOT_PROTOS = join(DATA_DIR, 'protos')
-OUTPUT_ROOT = join(DATA_DIR, 'output')
-DOC_OUTPUT_DIR = join(DATA_DIR, 'doc-output')
+DATA_DIR        = '/data'
+ROOT_PROTOS     = join(DATA_DIR, 'protos')
+OUTPUT_ROOT     = join(DATA_DIR, 'output')
+DOC_OUTPUT_DIR  = join(DATA_DIR, 'doc-output')
 
-services_yaml = join(ROOT_PROTOS, 'services.yml')
+services_yaml   = join(ROOT_PROTOS, 'services.yml')
 
 def get_service_files(name:str) -> dict[str, list[str]]:
     with open(services_yaml, 'r') as file:

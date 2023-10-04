@@ -5,7 +5,7 @@ from cli import *
 
 
 class Lang_UI(Base_UI):
-    protoc_plugin:str = path_java_plugin
+    protoc_plugin:str = plugin_path_java
     dir_output:str = join(OUTPUT_ROOT, 'java')
 
     @staticmethod

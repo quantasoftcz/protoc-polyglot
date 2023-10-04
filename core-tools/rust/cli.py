@@ -5,7 +5,7 @@ from cli import *
 
 
 class Lang_UI(Base_UI):
-    protoc_plugin:str = path_rust_plugin
+    protoc_plugin:str = plugin_path_rust
     dir_output:str = join(OUTPUT_ROOT, 'rust') # e.g. /workspace/output/python
 
     @staticmethod

@@ -5,8 +5,8 @@ from cli import *
 
 
 class Lang_UI(Base_UI):
-    protoc_plugin:str = plugin_path_python
-    dir_output:str = join(OUTPUT_ROOT, 'python') # e.g. /workspace/output/python
+    protoc_plugin:str = plugin_path_go
+    dir_output:str = join(OUTPUT_ROOT, 'go') # e.g. /workspace/output/python
 
     @staticmethod
     def _compile(files:list[str]) -> None:
@@ -15,9 +15,11 @@ class Lang_UI(Base_UI):
 
         com = f"""/usr/bin/protoc \
         -I {ROOT_PROTOS} \
-        --plugin=protoc-gen-grpc={Lang_UI.protoc_plugin} \
-        --grpc_out={Lang_UI.dir_output} \
-        --python_out={Lang_UI.dir_output} \
+        --plugin=protoc-gen-go={Lang_UI.protoc_plugin} \
+        --go_out={Lang_UI.dir_output} \
+        --go_opt=paths=source_relative \
+        --go-grpc_out={Lang_UI.dir_output} \
+        --go-grpc_opt=paths=source_relative \
         {" ".join(files)}"""
         
         print(com)

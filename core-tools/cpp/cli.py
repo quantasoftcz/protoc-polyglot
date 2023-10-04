@@ -7,7 +7,7 @@ from glob import glob
 
 
 class Lang_UI(Base_UI):
-    protoc_plugin:str = path_cpp_plugin
+    protoc_plugin:str = plugin_path_cpp
     dir_output:str = join(OUTPUT_ROOT, 'cpp') # e.g. /workspace/output/python
     
     @staticmethod
