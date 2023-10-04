@@ -6,9 +6,8 @@ from os.path import join
 import shutil
 
 
-class UI_lang(Base_UI):
+class Lang_UI(Base_UI):
     protoc_plugin:str = path_python_plugin
-    language:str = 'python'
 
     @staticmethod
     def _compile(dir_protos:str, files:list[str]) -> None:
@@ -19,7 +18,7 @@ class UI_lang(Base_UI):
 
         com = f"""/usr/bin/protoc \
         -I {dir_protos} \
-        --plugin=protoc-gen-grpc={UI_lang.protoc_plugin} \
+        --plugin=protoc-gen-grpc={Lang_UI.protoc_plugin} \
         --grpc_out={dir_output} \
         --python_out={dir_output} \
         {" ".join(files)}"""
@@ -28,4 +27,4 @@ class UI_lang(Base_UI):
         os.system(com)
 
 if __name__ == '__main__':
-    Fire(UI_lang)
+    Fire(Lang_UI)
