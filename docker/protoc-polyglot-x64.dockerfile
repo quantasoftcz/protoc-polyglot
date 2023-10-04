@@ -49,9 +49,19 @@ RUN wget https://github.com/pseudomuto/protoc-gen-doc/releases/download/v${PROTO
 ENV DEBIAN_FRONTEND=noninteractive
 RUN wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &&\
     dpkg -i packages-microsoft-prod.deb &&\
-    apt-get install -y apt-transport-https &&\
-    apt-get update &&\
-    apt-get install -y dotnet-sdk-7.0
+    apt install -y apt-transport-https &&\
+    apt update &&\
+    apt install -y dotnet-sdk-7.0
+
+# rust
+RUN apt -y install cargo &&\
+    cargo install protobuf-codegen
+
+# go
+RUN apt install -y golang-go &&\
+    go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28 &&\
+    go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+ENV PATH="$PATH:/root/go/bin"
 
 # rust
 RUN apt-get -y install cargo \
