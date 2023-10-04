@@ -12,7 +12,7 @@ path_js_plugin = '/usr/bin/protoc-gen-grpc-web'
 path_plugin_doc = '/usr/bin/protoc-gen-doc'
 
 DATA_DIR = '/data'
-ROOT_PROTOS = join(DATA_DIR, 'protos')
+ROOT_PROTOS = DATA_DIR
 OUTPUT_ROOT = join(DATA_DIR, 'output')
 DOC_OUTPUT_DIR = join(DATA_DIR, 'doc-output')
 

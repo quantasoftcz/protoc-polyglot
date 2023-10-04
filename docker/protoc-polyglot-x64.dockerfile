@@ -1,4 +1,4 @@
-# build: docker build -t protoc-polyglot-x64:1.54.3 -f protoc-polyglotx64.dockerfile .
+# build: docker build -t protoc-polyglot-x64:1.54.3 -f protoc-polyglot-x64.dockerfile .
 FROM ubuntu:22.04
 
 RUN apt update &&\
@@ -18,8 +18,8 @@ RUN pip install -U conan==${CONAN_VERSION} &&\
 
 # grpc
 WORKDIR /opt
-RUN conan install --requires grpc/${GRPC_VERSION} -b=missing -of grpc --deployer direct_deploy -r conancenter &&\
-    conan install --requires protobuf/${PROTOBUF_VERSION} -b=missing -of protobuf --deployer direct_deploy -r conancenter &&\
+RUN conan install --requires protobuf/${PROTOBUF_VERSION} -b=missing -of protobuf --deployer direct_deploy -r conancenter &&\
+    conan install --requires grpc/${GRPC_VERSION} -b=missing -of grpc --deployer direct_deploy -r conancenter &&\
     mv grpc build; mv build/direct_deploy/grpc .; rm -rf build &&\
     mv protobuf build; mv build/direct_deploy/protobuf .; rm -rf build &&\
     ln -s /opt/protobuf/bin/protoc /usr/bin/protoc &&\
