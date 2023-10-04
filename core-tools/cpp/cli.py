@@ -6,22 +6,22 @@ from cli import *
 from glob import glob
 
 
-class UI_lang(Base_UI):
+class Lang_UI(Base_UI):
     protoc_plugin:str = path_cpp_plugin
     dir_output:str = join(OUTPUT_ROOT, 'cpp') # e.g. /workspace/output/python
     
     @staticmethod
     def _compile(files:list[str]):
-        dir_src = join(UI_lang.dir_output, 'src')
-        dir_include = join(UI_lang.dir_output, 'include')
+        dir_src = join(Lang_UI.dir_output, 'src')
+        dir_include = join(Lang_UI.dir_output, 'include')
 
-        shutil.rmtree(UI_lang.dir_output, ignore_errors=True)
+        shutil.rmtree(Lang_UI.dir_output, ignore_errors=True)
         
         os.makedirs(dir_src, exist_ok=True)
         os.makedirs(dir_include, exist_ok=True)
 
         com = f'protoc -I {ROOT_PROTOS} \
-        --plugin=protoc-gen-grpc={UI_lang.protoc_plugin} \
+        --plugin=protoc-gen-grpc={Lang_UI.protoc_plugin} \
         --grpc_out={dir_src} \
         --cpp_out={dir_src} \
         {" ".join(files)}'
@@ -40,4 +40,4 @@ class UI_lang(Base_UI):
         return ret
 
 if __name__ == '__main__':
-    Fire(UI_lang)
+    Fire(Lang_UI)
