@@ -1,9 +1,9 @@
 ### Compile Protocol Buffers files into any of these languages
 Supported languages:
 - Python
+- JavaScript
 
 Requires fixing:
-- JavaScript
 - C++
 - Java
 - C#
