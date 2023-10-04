@@ -1,22 +1,23 @@
 #!/usr/bin/python3
 import os, sys
-sys.path.insert(0, os.path.abspath(''))
-from cli import *
+sys.path.insert(0, os.path.abspath('..'))
+from core.cli import *
 
 
 class Lang_UI(Base_UI):
     protoc_plugin:str = path_rust_plugin
-    dir_output:str = join(OUTPUT_ROOT, 'rust') # e.g. /workspace/output/python
 
     @staticmethod
-    def _compile(files:list[str]) -> None:
-        shutil.rmtree(Lang_UI.dir_output, ignore_errors=True)
-        os.makedirs(Lang_UI.dir_output, exist_ok=False)
+    def _compile(dir_protos:str, files:list[str]) -> None:
+        dir_output = join(dir_protos, "output/rust/")
+
+        shutil.rmtree(dir_output, ignore_errors=True)
+        os.makedirs(dir_output, exist_ok=False)
 
         com = f"""/usr/bin/protoc \
-        -I {ROOT_PROTOS} \
+        -I {dir_protos} \
         --plugin=protoc-gen-rust={Lang_UI.protoc_plugin} \
-        --rust_out={Lang_UI.dir_output} \
+        --rust_out={dir_output} \
         {" ".join(files)}"""
         
         print(com)

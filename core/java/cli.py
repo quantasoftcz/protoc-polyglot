@@ -6,17 +6,19 @@ from core.cli import *
 
 class Lang_UI(Base_UI):
     protoc_plugin:str = path_java_plugin
-    dir_output:str = join(OUTPUT_ROOT, 'java')
 
     @staticmethod
-    def _compile(files):
-        os.makedirs(Lang_UI.dir_output, exist_ok=True)
-        print(f'mkdir {Lang_UI.dir_output}')
+    def _compile(dir_protos:str, files:list[str]) -> None:
+        dir_output = join(dir_protos, "output/java/")
 
-        com = f'protoc -I {ROOT_PROTOS} \
+        shutil.rmtree(dir_output, ignore_errors=True)
+        os.makedirs(dir_output, exist_ok=True)
+        print(f'mkdir {dir_output}')
+
+        com = f'protoc -I {dir_protos} \
         --plugin=protoc-gen-grpc_java={Lang_UI.protoc_plugin} \
-        --grpc_java_out={Lang_UI.dir_output} \
-        --java_out={Lang_UI.dir_output} \
+        --grpc_java_out={dir_output} \
+        --java_out={dir_output} \
         {" ".join(files)}'
         
         print(com)
