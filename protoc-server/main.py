@@ -16,13 +16,12 @@ from shutil import rmtree
 from os.path import isdir, join
 
 sys.path.insert(0, os.path.abspath('..'))
-# import core
 import core.python.cli
 
 app = FastAPI()
 
 supported_languages = ['cpp', 'python']
-work_dir = 'workspace/'
+work_dir = '/workspace/tmp/'
 
 
 def extract_zip_file(file: UploadFile) -> str:
@@ -72,4 +71,6 @@ async def compile_type(language: str, file: UploadFile):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    if not os.path.exists(work_dir):
+        os.makedirs(work_dir)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True, reload_dirs=['../core'])
