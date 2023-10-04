@@ -64,7 +64,7 @@ async def compile_type(language: str, file: UploadFile):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Unsupported file format")
 
     dir_name = extract_zip_file(file)
-    ui = core.python.cli.UI_lang()
+    ui = core.python.cli.Lang_UI()
     zip_file = ui.make(dir_name)
 
     return FileResponse(zip_file, media_type='application/zip', filename="output.zip", background=BackgroundTask(clean_dir, dir_name))
