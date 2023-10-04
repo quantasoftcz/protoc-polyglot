@@ -10,8 +10,8 @@ class Lang_UI(Base_UI):
     protoc_plugin:str = path_js_plugin
 
     @staticmethod
-    def _compile(dir_protos:str, files:list[str]) -> None:
-        dir_output = join(dir_protos, "output/js/")
+    def _compile(dir_protos:str, output_dir: str, files:list[str]) -> None:
+        dir_output = join(output_dir, "js/")
 
         shutil.rmtree(dir_output, ignore_errors=True)
         os.makedirs(dir_output, exist_ok=False)

@@ -10,8 +10,8 @@ class Lang_UI(Base_UI):
     protoc_plugin:str = path_cpp_plugin
 
     @staticmethod
-    def _compile(dir_protos:str, files:list[str]) -> None:
-        dir_output = join(dir_protos, "output/cpp/")
+    def _compile(dir_protos:str, output_dir: str, files:list[str]) -> None:
+        dir_output = join(output_dir, "cpp/")
         dir_src = join(dir_output, 'src')
         dir_include = join(dir_output, 'include')
 
