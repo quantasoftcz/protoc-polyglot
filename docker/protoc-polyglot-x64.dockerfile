@@ -57,4 +57,4 @@ RUN wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-p
     apt-get update &&\
     apt-get install -y dotnet-sdk-7.0
 
-WORKDIR /workspace
+WORKDIR /core

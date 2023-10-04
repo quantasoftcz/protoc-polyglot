@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import os, sys
-sys.path.insert(0, os.path.abspath('.'))
-from cli import *
+sys.path.insert(0, os.path.abspath('..'))
+from core.cli import *
 from os.path import join
 import shutil
 

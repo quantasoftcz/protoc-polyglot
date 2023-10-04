@@ -16,7 +16,8 @@ from shutil import rmtree
 from os.path import isdir, join
 
 sys.path.insert(0, os.path.abspath('..'))
-import core
+# import core
+import core.python.cli
 
 app = FastAPI()
 

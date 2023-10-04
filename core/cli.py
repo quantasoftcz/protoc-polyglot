@@ -60,7 +60,7 @@ class Base_UI:
         dir_protos = os.path.abspath(dir)
         files = get_files_from_directory(dir_protos)
         self._compile(dir_protos, files)
-        dir_output = join(dir_protos, "output", self.language)
+        dir_output = join(dir_protos, "output")
         return zip_directory(dir_output)
 
     def protoc(self, name:str=""):

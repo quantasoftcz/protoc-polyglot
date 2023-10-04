@@ -8,8 +8,8 @@ from glob import glob
 from termcolor import colored
 
 os.chdir(getdir(os.path.abspath(sys.argv[0]))) # go to dir with script
-sys.path.insert(0, os.path.abspath('../..'))
-from cli import *
+sys.path.insert(0, os.path.abspath('..'))
+from core.cli import *
 from generateConanFiles import generateConanFiles
 
 
