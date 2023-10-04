@@ -63,4 +63,4 @@ RUN apt install -y golang-go &&\
     go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 ENV PATH="$PATH:/root/go/bin"
 
-WORKDIR /workspace
+WORKDIR /core
