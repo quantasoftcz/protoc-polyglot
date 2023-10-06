@@ -1,26 +1,26 @@
 #!/usr/bin/python3
 import os, sys
-sys.path.insert(0, os.path.abspath('.'))
-from cli import *
+sys.path.insert(0, os.path.abspath('..'))
+from core.cli import *
 
 from glob import glob
 
 
 class Lang_UI(Base_UI):
-    protoc_plugin:str = plugin_path_cpp
-    dir_output:str = join(OUTPUT_ROOT, 'cpp') # e.g. /workspace/output/python
-    
-    @staticmethod
-    def _compile(files:list[str]):
-        dir_src = join(Lang_UI.dir_output, 'src')
-        dir_include = join(Lang_UI.dir_output, 'include')
+    protoc_plugin:str = path_cpp_plugin
 
-        shutil.rmtree(Lang_UI.dir_output, ignore_errors=True)
-        
+    @staticmethod
+    def _compile(dir_protos:str, output_dir: str, files:list[str]) -> None:
+        dir_output = join(output_dir, "cpp/")
+        dir_src = join(dir_output, 'src')
+        dir_include = join(dir_output, 'include')
+
+        shutil.rmtree(dir_output, ignore_errors=True)
+
         os.makedirs(dir_src, exist_ok=True)
         os.makedirs(dir_include, exist_ok=True)
 
-        com = f'protoc -I {ROOT_PROTOS} \
+        com = f'protoc -I {dir_protos} \
         --plugin=protoc-gen-grpc={Lang_UI.protoc_plugin} \
         --grpc_out={dir_src} \
         --cpp_out={dir_src} \
