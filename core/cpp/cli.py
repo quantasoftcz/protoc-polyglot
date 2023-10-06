@@ -7,7 +7,7 @@ from glob import glob
 
 
 class Lang_UI(Base_UI):
-    protoc_plugin:str = path_cpp_plugin
+    protoc_plugin:str = plugin_path_cpp
 
     @staticmethod
     def _compile(dir_protos:str, output_dir: str, files:list[str]) -> None:
