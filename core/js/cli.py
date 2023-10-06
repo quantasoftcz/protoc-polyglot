@@ -2,12 +2,11 @@
 import os, sys
 sys.path.insert(0, os.path.abspath('..'))
 from core.cli import *
-from os.path import join
 import shutil
 
 
 class Lang_UI(Base_UI):
-    protoc_plugin:str = path_js_plugin
+    protoc_plugin:str = plugin_path_js
 
     @staticmethod
     def _compile(dir_protos:str, output_dir: str, files:list[str]) -> None:

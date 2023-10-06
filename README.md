@@ -15,7 +15,7 @@ C#, PHP, Ruby, ObjectiveC
   `./cli.py protoc`
 - Compile services: \
   `./[language]/cli.py protoc [name]` \
-  `./[language]/cli.py protoc *`
+  `./[language]/cli.py protoc \*`
 
 #### Examples:
 `alias DOCKER_RUN='docker run -it --rm -v $(pwd)/core:/core -v $(pwd)/output:/data/output -v $(pwd)/samples:/data/protos protoc-polyglot-x64:1.54.3'`

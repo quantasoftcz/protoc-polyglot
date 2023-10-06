@@ -5,7 +5,7 @@ from core.cli import *
 
 
 class Lang_UI(Base_UI):
-    protoc_plugin:str = path_java_plugin
+    protoc_plugin:str = plugin_path_java
 
     @staticmethod
     def _compile(dir_protos:str, output_dir: str, files:list[str]) -> None:
