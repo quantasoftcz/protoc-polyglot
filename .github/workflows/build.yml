@@ -1,0 +1,31 @@
+name: Build
+
+on:
+  pull_request:
+    branches: [ "main", "dev" ]
+  workflow_dispatch:
+
+jobs:
+  build_base:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup a version
+      run: echo "Tag=$(date +%s)" >> $GITHUB_ENV
+    - name: Build the base Docker image
+      run: docker build -t protoc-polyglot-x64:$Tag -f protoc-polyglot-x64.dockerfile .
+      working-directory: ./docker
+    - name: Build the server Docker image # This should be  a separate job but we do not upload the base image
+      run: docker build -t protoc-polyglot-server-x64:$Tag --build-arg base_image_tag=$Tag -f docker/protoc-polyglot-server-x64.dockerfile .
+
+#  build_server:
+#    runs-on: ubuntu-22.04
+#
+#    needs: build_base
+#
+#    steps:
+#    - uses: actions/checkout@v3
+#    - name: Build the server Docker image
+#      run: docker build -t protoc-polyglot-server-x64:$(date +%s) --build-arg base_image_tag=$(date +%s) -f docker/protoc-polyglot-server-x64.dockerfile .
+  
