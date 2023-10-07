@@ -23,11 +23,13 @@ jobs:
     - name: Build the server Docker image # This should be  a separate job but we do not upload the base image
       run: docker build -t protoc-polyglot-server-x64:$Tag --build-arg base_image_tag=$Tag -f docker/protoc-polyglot-server-x64.dockerfile .
 
-    - name: test list services
+    - name: Tag docker image
+      run: docker tag protoc-polyglot-x64:$Tag protoc-polyglot-x64:1.54.3
+    - name: Test list services
       run: $DOCKER_RUN ./cli.py list
-    - name: test single service python
+    - name: Test single service python
       run: $DOCKER_RUN ./python/cli.py protoc bookclub
-    - name: test all services js
+    - name: Test all services js
       run: $DOCKER_RUN ./js/cli.py protoc
 
 #  build_server:
