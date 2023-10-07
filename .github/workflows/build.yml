@@ -22,15 +22,15 @@ jobs:
       working-directory: ./docker
     - name: Build the server Docker image # This should be  a separate job but we do not upload the base image
       run: docker build -t protoc-polyglot-server-x64:$Tag --build-arg base_image_tag=$Tag -f docker/protoc-polyglot-server-x64.dockerfile .
-    - name: docker alias
-      run: alias DOCKER_RUN='docker run -it --rm -v $(pwd)/core:/core -v $(pwd)/output:/data/output -v $(pwd)/samples:/data/protos protoc-polyglot-x64:1.54.3'
 
+    - name: docker alias
+      run: alias DOCKER_RUN='docker run --rm -v $(pwd)/core:/core -v $(pwd)/output:/data/output -v $(pwd)/samples:/data/protos protoc-polyglot-x64:1.54.3'
     - name: test list services
-      run: $DOCKER_RUN ./cli.py protoc
+      run: $DOCKER_RUN ./cli.py list
     - name: test single service python
       run: $DOCKER_RUN ./python/cli.py protoc bookclub
     - name: test all services js
-      run: $DOCKER_RUN ./js/cli.py protoc \*
+      run: $DOCKER_RUN ./js/cli.py protoc
 
 #  build_server:
 #    runs-on: ubuntu-22.04

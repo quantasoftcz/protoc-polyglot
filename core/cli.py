@@ -24,7 +24,7 @@ def get_service_files(name:str) -> dict[str, list[str]]:
     with open(services_yaml, 'r') as file:
         data = yaml.safe_load(file)
         
-        if name=="*":
+        if name=="":
             return {n: data[n]['files'] for n in data}
         else:
             return {name: data[name]['files']}
@@ -47,7 +47,7 @@ def zip_directory(dir: str):
     return zip_file
 
 class Base_UI:
-    def info(self):
+    def list(self):
         with open(services_yaml, 'r') as file:
             data = yaml.safe_load(file)
             for name in data:
@@ -65,20 +65,17 @@ class Base_UI:
         dir_output = join(dir_protos, "output")
         self._compile(dir_protos, dir_output, files)
         return zip_directory(dir_output)
-
+    
     def protoc(self, name:str=""):
-        if len(name) == 0:
-            self.info()
-            exit(0)
-            
         if self.__class__.__name__ == "Base_UI":
-            print("ERROR: Run this command in selected language subfolder")
+            print("ERROR: Use a language")
             exit(1)
         
         services = get_service_files(name)
         
         for name, files in services.items():
             self._compile(ROOT_PROTOS, OUTPUT_ROOT, files)
+    
 
 if __name__ == '__main__':
     Fire(Base_UI)
