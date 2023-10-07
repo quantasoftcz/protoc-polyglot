@@ -28,9 +28,9 @@ jobs:
     - name: Test list services
       run: eval "$DOCKER_RUN ./cli.py list"
     - name: Test single service python
-      run: eval "DOCKER_RUN ./python/cli.py protoc bookclub"
+      run: eval "$DOCKER_RUN ./python/cli.py protoc bookclub"
     - name: Test all services js
-      run: eval "DOCKER_RUN ./js/cli.py protoc"
+      run: eval "$DOCKER_RUN ./js/cli.py protoc"
     - name: Output check
       run: |
         ls output/python/bookclub
