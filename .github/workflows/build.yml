@@ -5,12 +5,16 @@ on:
     branches: [ "main", "dev" ]
   workflow_dispatch:
 
+env:
+  DOCKER_RUN: docker run --rm -v $GITHUB_WORKSPACE/core:/core -v $GITHUB_WORKSPACE/output:/data/output -v $GITHUB_WORKSPACE/samples:/data/protos protoc-polyglot-x64:1.54.3
+
 jobs:
-  build_base:
+  build_and_test:
     runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Setup a version
       run: echo "Tag=$(date +%s)" >> $GITHUB_ENV
     - name: Build the base Docker image
@@ -18,6 +22,19 @@ jobs:
       working-directory: ./docker
     - name: Build the server Docker image # This should be  a separate job but we do not upload the base image
       run: docker build -t protoc-polyglot-server-x64:$Tag --build-arg base_image_tag=$Tag -f docker/protoc-polyglot-server-x64.dockerfile .
+
+    - name: Tag docker image
+      run: docker tag protoc-polyglot-x64:$Tag protoc-polyglot-x64:1.54.3
+    - name: Test list services
+      run: eval "$DOCKER_RUN ./cli.py list"
+    - name: Test single service python
+      run: eval "$DOCKER_RUN ./python/cli.py protoc bookclub"
+    - name: Test all services js
+      run: eval "$DOCKER_RUN ./js/cli.py protoc"
+    - name: Output check
+      run: |
+        ls output/python/bookclub
+        ls output/js
 
 #  build_server:
 #    runs-on: ubuntu-22.04
