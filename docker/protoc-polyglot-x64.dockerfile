@@ -61,6 +61,6 @@ RUN apt -y install cargo &&\
 RUN apt install -y golang-go &&\
     go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28 &&\
     go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
-ENV PATH="$PATH:/root/go/bin"
+ENV PATH="$PATH:/root/go/bin:/core"
 
 WORKDIR /core
