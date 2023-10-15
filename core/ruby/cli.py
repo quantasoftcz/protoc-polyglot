@@ -5,20 +5,16 @@ from core.cli import *
 
 
 class Lang_UI(Base_UI):
-    protoc_plugin:str = plugin_path_python
-
     @staticmethod
     def _compile(dir_protos:str, output_dir: str, files:list[str]) -> None:
-        dir_output = join(output_dir, "python/")
+        dir_output = join(output_dir, "ruby/")
 
         shutil.rmtree(dir_output, ignore_errors=True)
         os.makedirs(dir_output, exist_ok=False)
 
         com = f"""/usr/bin/protoc \
-        -I {dir_protos} \
-        --plugin=protoc-gen-grpc={Lang_UI.protoc_plugin} \
-        --grpc_out={dir_output} \
-        --python_out={dir_output} \
+        --proto_path {dir_protos} \
+        --ruby_out={dir_output} \
         {" ".join(files)}"""
         
         print(com)

@@ -2,7 +2,6 @@
 import os, sys
 sys.path.insert(0, os.path.abspath('..'))
 from core.cli import *
-import shutil
 
 
 class Lang_UI(Base_UI):
