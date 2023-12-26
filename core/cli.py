@@ -3,10 +3,10 @@ import os, sys, shutil, yaml
 from os.path import dirname, basename, abspath, join
 from fire import Fire
 from zipfile import ZipFile
+import glob
 
 plugin_path_cpp     = '/usr/bin/grpc_cpp_plugin'
 plugin_path_python  = '/usr/bin/grpc_python_plugin'
-plugin_path_csharp  = '/usr/bin/grpc_csharp_plugin'
 plugin_path_java    = '/usr/bin/protoc-gen-grpc-java'
 plugin_path_rust    = '/usr/bin/protoc-gen-rust'
 plugin_path_go      = '/usr/bin/protoc-gen-go'

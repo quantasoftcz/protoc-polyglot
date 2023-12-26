@@ -87,13 +87,5 @@ RUN mkdir go; cd go &&\
     ln -s /opt/go/protoc-gen-go-grpc /usr/bin/protoc-gen-go-grpc
 # location: /opt/go
 
-# dotnet
-ENV DEBIAN_FRONTEND=noninteractive
-RUN wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb &&\
-    dpkg -i packages-microsoft-prod.deb &&\
-    apt install -y apt-transport-https &&\
-    apt update &&\
-    apt install -y dotnet-sdk-7.0
-
 
 WORKDIR /core
