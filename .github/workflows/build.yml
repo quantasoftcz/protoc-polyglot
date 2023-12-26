@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  DOCKER_RUN: docker run --rm -v $GITHUB_WORKSPACE/core:/core -v $GITHUB_WORKSPACE/output:/data/output -v $GITHUB_WORKSPACE/samples:/data/protos protoc-polyglot-x64:1.54.3
+  DOCKER_RUN: docker run --rm -v $GITHUB_WORKSPACE/core:/core -v $GITHUB_WORKSPACE/output:/data/output -v $(pwd)/tests:/data/tests -v $GITHUB_WORKSPACE/samples:/data/protos protoc-polyglot-x64:1.54.3
 
 jobs:
   build_and_test:
@@ -29,8 +29,8 @@ jobs:
       run: eval "$DOCKER_RUN ./cli.py list"
     - name: Test single service python
       run: eval "$DOCKER_RUN ./python/cli.py protoc bookclub"
-    - name: Test all services js
-      run: eval "$DOCKER_RUN ./js/cli.py protoc"
+    - name: Test protoc command
+      run: eval "$DOCKER_RUN source /data/tests/run.sh"
     - name: Output check
       run: |
         ls output/python/bookclub
