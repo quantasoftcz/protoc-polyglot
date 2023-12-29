@@ -17,7 +17,7 @@ x86_64
 3) `DOCKER_RUN [command]`
 
 ### List of commands:
-- List available services: \
+- List available languages and services: \
   `cli.py list`
 - Compile a service: \
   `[language]/cli.py protoc [name]`

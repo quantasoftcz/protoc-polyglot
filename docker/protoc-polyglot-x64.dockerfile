@@ -62,6 +62,7 @@ RUN mkdir doc; cd doc &&\
 # location: /opt/doc
 
 # rust
+# https://github.com/tafia/quick-protobuf
 RUN mkdir rust; cd rust &&\
 		apt -y install cargo &&\
     cargo install protobuf-codegen &&\
