@@ -16,7 +16,7 @@ ARG GRPC_VERSION=1.54.3
 ARG PROTOBUF_VERSION=3.21.12
 RUN pip install conan==${CONAN_VERSION} &&\
     conan profile detect &&\
-		conan install --requires protobuf/${PROTOBUF_VERSION} -b=missing -of protobuf --deployer direct_deploy -r conancenter &&\
+    conan install --requires protobuf/${PROTOBUF_VERSION} -b=missing -of protobuf --deployer direct_deploy -r conancenter &&\
     conan install --requires grpc/${GRPC_VERSION} -b=missing -of grpc --deployer direct_deploy -r conancenter &&\
     mv grpc build; mv build/direct_deploy/grpc .; rm -rf build &&\
     mv protobuf build; mv build/direct_deploy/protobuf .; rm -rf build &&\
@@ -43,10 +43,10 @@ RUN mkdir java; cd java &&\
 ARG PROTOC_GRPC_JS_VER=1.4.1
 ARG PROTOC_PB_JS_VER=3.21.2
 RUN mkdir js; cd js &&\
-		wget https://github.com/protocolbuffers/protobuf-javascript/releases/download/v${PROTOC_PB_JS_VER}/protobuf-javascript-3.21.2-linux-x86_64.tar.gz &&\
-		tar -xzvf protobuf-javascript-3.21.2-linux-x86_64.tar.gz &&\
+    wget https://github.com/protocolbuffers/protobuf-javascript/releases/download/v${PROTOC_PB_JS_VER}/protobuf-javascript-3.21.2-linux-x86_64.tar.gz &&\
+    tar -xzvf protobuf-javascript-3.21.2-linux-x86_64.tar.gz &&\
     rm protobuf-javascript-3.21.2-linux-x86_64.tar.gz &&\
-		wget https://github.com/grpc/grpc-web/releases/download/${PROTOC_GRPC_JS_VER}/protoc-gen-grpc-web-${PROTOC_GRPC_JS_VER}-linux-x86_64 &&\
+    wget https://github.com/grpc/grpc-web/releases/download/${PROTOC_GRPC_JS_VER}/protoc-gen-grpc-web-${PROTOC_GRPC_JS_VER}-linux-x86_64 &&\
     chmod +x protoc-gen-grpc-web-${PROTOC_GRPC_JS_VER}-linux-x86_64 &&\
     ln -s /opt/js/protoc-gen-grpc-web-${PROTOC_GRPC_JS_VER}-linux-x86_64 /usr/bin/protoc-gen-grpc-web &&\
     ln -s /opt/js/bin/protoc-gen-js /usr/bin/protoc-gen-js
@@ -64,7 +64,7 @@ RUN mkdir doc; cd doc &&\
 # rust
 # https://github.com/tafia/quick-protobuf
 RUN mkdir rust; cd rust &&\
-		apt -y install cargo &&\
+    apt -y install cargo &&\
     cargo install protobuf-codegen &&\
     cp /root/.cargo/bin/protoc-gen-rust /opt/rust/protoc-gen-rust &&\
     cargo uninstall protobuf-codegen &&\
@@ -81,7 +81,7 @@ RUN mkdir go; cd go &&\
     go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2 &&\
     cp /root/go/bin/protoc-gen-go . &&\
     cp /root/go/bin/protoc-gen-go-grpc . &&\
-		apt purge -y golang-go &&\
+    apt purge -y golang-go &&\
     apt autoremove -y &&\
     rm -rf /root/go &&\
     ln -s /opt/go/protoc-gen-go /usr/bin/protoc-gen-go &&\
