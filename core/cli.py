@@ -13,6 +13,7 @@ plugin_path_go      = '/usr/bin/protoc-gen-go'
 plugin_path_doc     = '/usr/bin/protoc-gen-doc'
 
 DATA_DIR        = '/data'
+CORE_DIR        = '/core'
 ROOT_PROTOS     = join(DATA_DIR, 'protos')
 OUTPUT_ROOT     = join(DATA_DIR, 'output')
 DOC_OUTPUT_DIR  = join(DATA_DIR, 'doc-output')
@@ -47,8 +48,16 @@ def zip_directory(dir: str):
 
 class Base_UI:
     def list(self):
+        with os.scandir(CORE_DIR) as entries:
+            print('Found languages:')
+            folders = [entry.name for entry in entries if entry.is_dir() and entry.name not in ['__pycache__']]
+            for f in folders:
+                print(f)
+        
+        print()
         with open(services_yaml, 'r') as file:
             data = yaml.safe_load(file)
+            print('Found services:')
             for name in data:
                 print(f'- {name}')
                 for file in data[name]['files']:

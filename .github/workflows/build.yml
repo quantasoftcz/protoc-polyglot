@@ -30,7 +30,7 @@ jobs:
     - name: Test single service python
       run: eval "$DOCKER_RUN ./python/cli.py protoc bookclub"
     - name: Test protoc command
-      run: eval "$DOCKER_RUN source /data/tests/run.sh"
+      run: eval "$DOCKER_RUN bash /data/tests/run.sh"
     - name: Output check
       run: |
         ls output/python/bookclub

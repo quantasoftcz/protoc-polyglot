@@ -25,7 +25,7 @@ x86_64
   `[language]/cli.py protoc`
 
 ### Examples:
-`alias DOCKER_RUN='docker run --rm -v $(pwd)/core:/core -v $(pwd)/output:/data/output -v $(pwd)/samples:/data/protos protoc-polyglot-x64:1.54.3'`
+`alias DOCKER_RUN='docker run --rm -v $(pwd)/core:/core -v $(pwd)/output:/data/output -v $(pwd)/samples:/data/protos -v $(pwd)/tests:/data/tests protoc-polyglot-x64:1.54.3'`
 - `DOCKER_RUN cli.py list`
 - `DOCKER_RUN python/cli.py protoc bookclub`
 - `DOCKER_RUN js/cli.py protoc`
