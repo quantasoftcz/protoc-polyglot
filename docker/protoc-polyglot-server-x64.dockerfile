@@ -5,7 +5,7 @@ FROM protoc-polyglot-x64:$base_image_tag
 
 # setup envirnment
 WORKDIR /env
-COPY protoc-server/requierements.txt .
+COPY api-server/requierements.txt .
 RUN pip install -r requierements.txt
 
 # set alias for frequent commands

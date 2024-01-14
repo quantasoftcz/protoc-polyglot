@@ -5,8 +5,6 @@ from core.cli import *
 
 
 class Lang_UI(Base_UI):
-    protoc_plugin:str = plugin_path_js
-
     @staticmethod
     def _compile(dir_protos:str, output_dir: str, files:list[str]) -> None:
         dir_output = join(output_dir, "js/")
