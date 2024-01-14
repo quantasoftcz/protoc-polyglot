@@ -16,7 +16,7 @@ DATA_DIR        = '/data'
 CORE_DIR        = '/core'
 ROOT_PROTOS     = join(DATA_DIR, 'protos')
 OUTPUT_ROOT     = join(DATA_DIR, 'output')
-DOC_OUTPUT_DIR  = join(DATA_DIR, 'doc-output')
+DOC_OUTPUT_DIR  = join(DATA_DIR, 'doc')
 
 services_yaml   = join(ROOT_PROTOS, 'services.yml')
 
@@ -83,6 +83,27 @@ class Base_UI:
         
         for name, files in services.items():
             self._compile(ROOT_PROTOS, OUTPUT_ROOT, files)
+
+    @staticmethod
+    def doc(md=True, html=False):
+        for name, files in get_service_files("").items():
+            aux = ' '.join(files)
+            os.makedirs(DOC_OUTPUT_DIR, exist_ok=True)
+            if md:
+                com = f'protoc -I {ROOT_PROTOS} --plugin=protoc-gen-doc={plugin_path_doc} --doc_out={DOC_OUTPUT_DIR} --doc_opt=markdown,{name}.md {aux}'
+                print(com)
+                os.system(com)
+
+                # fix links by "a name" -> "a id"
+                text = open(join(DOC_OUTPUT_DIR, f'{name}.md'), 'r', encoding="utf-8").read()
+                text = text.replace('<a name=', '<a id=')
+                text = text.replace(' &lt;br&gt;', ' <br>')
+                open(join(DOC_OUTPUT_DIR, f'{name}.md'), 'w', encoding="utf-8").write(text)
+            if html:
+                com = f'protoc -I {ROOT_PROTOS} --plugin=protoc-gen-doc={plugin_path_doc} --doc_out={DOC_OUTPUT_DIR} --doc_opt=html,{name}.html {aux}'
+                print(com)
+                os.system(com)
+        print(f'\ndone, docs saved in {DOC_OUTPUT_DIR}')
     
 
 if __name__ == '__main__':

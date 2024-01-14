@@ -89,4 +89,6 @@ RUN mkdir go; cd go &&\
 # location: /opt/go
 
 
+ENV PATH="$PATH:/root/go/bin:/core"
+
 WORKDIR /core
