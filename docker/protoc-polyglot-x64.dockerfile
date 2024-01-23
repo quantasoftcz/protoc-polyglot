@@ -1,4 +1,4 @@
-# build: docker build -t protoc-polyglot-x64:1.54.3 -f protoc-polyglot-x64.dockerfile .
+# build: docker build -t protoc-polyglot-x64:1.54.3 -f protoc-polyglot-x64.dockerfile ..
 # peek: docker run --rm -v $(pwd)/core:/core -v $(pwd)/output:/data/output -v $(pwd)/samples:/data/protos protoc-polyglot-x64:1.54.3 bash
 FROM ubuntu:22.04
 
@@ -90,5 +90,7 @@ RUN mkdir go; cd go &&\
 
 
 ENV PATH="$PATH:/root/go/bin:/core"
+
+COPY core /core
 
 WORKDIR /core
