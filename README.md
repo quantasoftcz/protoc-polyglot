@@ -13,7 +13,7 @@ x86_64
 
 ### Getting started
 1) Build prepared [docker image](docker/protoc-polyglot-x64.dockerfile)
-2) `alias DOCKER_RUN='docker run --rm -v [output dir]:/data/output -v [output doc dir]:/data/doc -v [input protos dir]:/data/protos protoc-polyglot-x64:1.54.3'`
+2) `alias DOCKER_RUN='docker run --rm -v [output dir]:/data/output -v [input protos dir]:/data/protos protocpolyglot/protoc-polyglot'`
 3) `DOCKER_RUN [command]`
 
 ### List of commands:
@@ -25,7 +25,7 @@ x86_64
   `[language]/cli.py protoc`
 
 ### Examples:
-`alias DOCKER_RUN='docker run --rm -v $(pwd)/output:/data/output -v $(pwd)/doc:/data/doc -v $(pwd)/samples:/data/protos -v $(pwd)/tests:/data/tests protoc-polyglot-x64:1.54.3'`
+`alias DOCKER_RUN='docker run --rm -v $(pwd)/output:/data/output -v $(pwd)/samples:/data/protos -v $(pwd)/tests:/data/tests protocpolyglot/protoc-polyglot'`
 - `DOCKER_RUN cli.py list`
 - `DOCKER_RUN python/cli.py protoc bookclub`
 - `DOCKER_RUN js/cli.py protoc`

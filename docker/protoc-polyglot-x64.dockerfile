@@ -1,5 +1,5 @@
-# build: docker build -t protoc-polyglot-x64:1.54.3 -f protoc-polyglot-x64.dockerfile ..
-# peek: docker run --rm -v $(pwd)/core:/core -v $(pwd)/output:/data/output -v $(pwd)/samples:/data/protos protoc-polyglot-x64:1.54.3 bash
+# build: docker build -t protocpolyglot/protoc-polyglot:1.54.3 -f protoc-polyglot-x64.dockerfile ..; docker tag protocpolyglot/protoc-polyglot:1.54.3 protocpolyglot/protoc-polyglot
+# peek: docker run --rm -v $(pwd)/core:/core -it -v $(pwd)/output:/data/output -v $(pwd)/samples:/data/protos protocpolyglot/protoc-polyglot bash
 FROM ubuntu:22.04
 
 

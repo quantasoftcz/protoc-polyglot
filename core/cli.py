@@ -3,7 +3,6 @@ import os, sys, shutil, yaml
 from os.path import dirname, basename, abspath, join
 from fire import Fire
 from zipfile import ZipFile
-import glob
 
 plugin_path_cpp     = '/usr/bin/grpc_cpp_plugin'
 plugin_path_python  = '/usr/bin/grpc_python_plugin'
@@ -20,31 +19,35 @@ DOC_OUTPUT_DIR  = join(DATA_DIR, 'doc')
 
 services_yaml   = join(ROOT_PROTOS, 'services.yml')
 
-def get_service_files(name:str) -> dict[str, list[str]]:
-    with open(services_yaml, 'r') as file:
-        data = yaml.safe_load(file)
-        
-        if name=="":
-            return {n: data[n]['files'] for n in data}
-        else:
-            return {name: data[name]['files']}
+class Polyglot:
+    @staticmethod
+    def get_service_info(name:str, key:str='files') -> dict[str, list[str]]:
+        with open(services_yaml, 'r') as file:
+            data = yaml.safe_load(file)
+            
+            if name=="":
+                return {n: data[n][key] for n in data}
+            else:
+                return {name: data[name][key]}
 
-def get_files_from_directory(dir: str):
-    proto_files = []
-    for root, directories, files in os.walk(dir):
-        for filename in files:
-            if ".proto" in filename:
-                proto_files.append(join(root, filename))
-    return proto_files
-
-def zip_directory(dir: str):
-    zip_file = f'{dir}.zip'
-    with ZipFile(zip_file, 'w') as zip:
+    @staticmethod
+    def get_files_from_directory(dir: str):
+        proto_files = []
         for root, directories, files in os.walk(dir):
             for filename in files:
-                filepath = join(root, filename)
-                zip.write(filepath, filepath[len(dir):])
-    return zip_file
+                if ".proto" in filename:
+                    proto_files.append(join(root, filename))
+        return proto_files
+
+    @staticmethod
+    def zip_directory(dir: str):
+        zip_file = f'{dir}.zip'
+        with ZipFile(zip_file, 'w') as zip:
+            for root, directories, files in os.walk(dir):
+                for filename in files:
+                    filepath = join(root, filename)
+                    zip.write(filepath, filepath[len(dir):])
+        return zip_file
 
 class Base_UI:
     def list(self):
@@ -69,24 +72,24 @@ class Base_UI:
             exit(1)
 
         dir_protos = os.path.abspath(dir)
-        files = get_files_from_directory(dir_protos)
+        files = Polyglot.get_files_from_directory(dir_protos)
         dir_output = join(dir_protos, "output")
         self._compile(dir_protos, dir_output, files)
-        return zip_directory(dir_output)
+        return Polyglot.zip_directory(dir_output)
     
     def protoc(self, name:str=""):
         if self.__class__.__name__ == "Base_UI":
             print("ERROR: Use a language")
             exit(1)
         
-        services = get_service_files(name)
+        services = Polyglot.get_service_info(name)
         
         for name, files in services.items():
             self._compile(ROOT_PROTOS, OUTPUT_ROOT, files)
 
     @staticmethod
     def doc(md=True, html=False):
-        for name, files in get_service_files("").items():
+        for name, files in Polyglot.get_service_info("").items():
             aux = ' '.join(files)
             os.makedirs(DOC_OUTPUT_DIR, exist_ok=True)
             if md:
