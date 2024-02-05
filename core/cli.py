@@ -4,23 +4,24 @@ from os.path import dirname, basename, abspath, join
 from fire import Fire
 from zipfile import ZipFile
 
-plugin_path_cpp     = '/usr/bin/grpc_cpp_plugin'
-plugin_path_python  = '/usr/bin/grpc_python_plugin'
-plugin_path_java    = '/usr/bin/protoc-gen-grpc-java'
-plugin_path_rust    = '/usr/bin/protoc-gen-rust'
-plugin_path_go      = '/usr/bin/protoc-gen-go'
-plugin_path_doc     = '/usr/bin/protoc-gen-doc'
-plugin_path_csharp  = '/usr/bin/grpc_csharp_plugin'
 
 DATA_DIR        = '/data'
 CORE_DIR        = '/core'
 ROOT_PROTOS     = join(DATA_DIR, 'protos')
 OUTPUT_ROOT     = join(DATA_DIR, 'output')
-DOC_OUTPUT_DIR  = join(DATA_DIR, 'doc')
+DOC_OUTPUT_DIR  = join(OUTPUT_ROOT, 'doc')
 
 services_yaml   = join(ROOT_PROTOS, 'services.yml')
 
 class Polyglot:
+    plugin_path_cpp = '/usr/bin/grpc_cpp_plugin'
+    plugin_path_python = '/usr/bin/grpc_python_plugin'
+    plugin_path_java = '/usr/bin/protoc-gen-grpc-java'
+    plugin_path_rust = '/usr/bin/protoc-gen-rust'
+    plugin_path_go = '/usr/bin/protoc-gen-go'
+    plugin_path_csharp = '/usr/bin/grpc_csharp_plugin'
+    plugin_path_doc = '/usr/bin/protoc-gen-doc'
+    
     @staticmethod
     def get_service_info(name:str, key:str='files') -> dict[str, list[str]]:
         with open(services_yaml, 'r') as file:
@@ -53,7 +54,7 @@ class Polyglot:
 class Base_UI:
     def list(self):
         with os.scandir(CORE_DIR) as entries:
-            print('Found languages:')
+            print('Supported languages:')
             folders = [entry.name for entry in entries if entry.is_dir() and entry.name not in ['__pycache__']]
             for f in folders:
                 print(f)
@@ -85,8 +86,13 @@ class Base_UI:
         
         services = Polyglot.get_service_info(name)
         
+        lang_name = os.path.basename(os.path.dirname(os.path.realpath(sys.argv[0])))
+        # converts ./python/cli.py -> /core/python/cli.py -> /core/python -> python
+        
         for name, files in services.items():
-            self._compile(ROOT_PROTOS, OUTPUT_ROOT, files)
+            self._compile(ROOT_PROTOS, join(OUTPUT_ROOT, lang_name, name), files)
+            
+        self.doc()
 
     @staticmethod
     def doc(md=True, html=False):
@@ -94,7 +100,7 @@ class Base_UI:
             aux = ' '.join(files)
             os.makedirs(DOC_OUTPUT_DIR, exist_ok=True)
             if md:
-                com = f'protoc -I {ROOT_PROTOS} --plugin=protoc-gen-doc={plugin_path_doc} --doc_out={DOC_OUTPUT_DIR} --doc_opt=markdown,{name}.md {aux}'
+                com = f'protoc -I {ROOT_PROTOS} --plugin=protoc-gen-doc={Polyglot.plugin_path_doc} --doc_out={DOC_OUTPUT_DIR} --doc_opt=markdown,{name}.md {aux}'
                 print(com)
                 os.system(com)
 
@@ -104,7 +110,7 @@ class Base_UI:
                 text = text.replace(' &lt;br&gt;', ' <br>')
                 open(join(DOC_OUTPUT_DIR, f'{name}.md'), 'w', encoding="utf-8").write(text)
             if html:
-                com = f'protoc -I {ROOT_PROTOS} --plugin=protoc-gen-doc={plugin_path_doc} --doc_out={DOC_OUTPUT_DIR} --doc_opt=html,{name}.html {aux}'
+                com = f'protoc -I {ROOT_PROTOS} --plugin=protoc-gen-doc={Polyglot.plugin_path_doc} --doc_out={DOC_OUTPUT_DIR} --doc_opt=html,{name}.html {aux}'
                 print(com)
                 os.system(com)
         print(f'\ndone, docs saved in {DOC_OUTPUT_DIR}')

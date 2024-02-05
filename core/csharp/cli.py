@@ -6,9 +6,7 @@ from core.cli import *
 
 class Lang_UI(Base_UI):
     @staticmethod
-    def _compile(dir_protos:str, output_dir: str, files:list[str]) -> None:
-        dir_output = join(output_dir, "csharp/")
-
+    def _compile(dir_protos:str, dir_output: str, files:list[str]) -> None:
         shutil.rmtree(dir_output, ignore_errors=True)
         os.makedirs(dir_output, exist_ok=False)
 
@@ -16,7 +14,7 @@ class Lang_UI(Base_UI):
         -I {dir_protos} \
         --grpc_out={dir_output} \
         --csharp_out={dir_output} \
-        --plugin=protoc-gen-grpc={plugin_path_csharp} \
+        --plugin=protoc-gen-grpc={Polyglot.plugin_path_csharp} \
         {" ".join(files)}"""
         
         print(com)

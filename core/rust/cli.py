@@ -5,18 +5,14 @@ from core.cli import *
 
 
 class Lang_UI(Base_UI):
-    protoc_plugin:str = plugin_path_rust
-
     @staticmethod
-    def _compile(dir_protos:str, output_dir: str, files:list[str]) -> None:
-        dir_output = join(output_dir, "rust/")
-
+    def _compile(dir_protos:str, dir_output: str, files:list[str]) -> None:
         shutil.rmtree(dir_output, ignore_errors=True)
         os.makedirs(dir_output, exist_ok=False)
 
         com = f"""/usr/bin/protoc \
         -I {dir_protos} \
-        --plugin=protoc-gen-rust={Lang_UI.protoc_plugin} \
+        --plugin=protoc-gen-rust={Polyglot.plugin_path_rust} \
         --rust_out={dir_output} \
         {" ".join(files)}"""
         
