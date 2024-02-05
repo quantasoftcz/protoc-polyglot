@@ -10,6 +10,7 @@ plugin_path_java    = '/usr/bin/protoc-gen-grpc-java'
 plugin_path_rust    = '/usr/bin/protoc-gen-rust'
 plugin_path_go      = '/usr/bin/protoc-gen-go'
 plugin_path_doc     = '/usr/bin/protoc-gen-doc'
+plugin_path_csharp  = '/usr/bin/grpc_csharp_plugin'
 
 DATA_DIR        = '/data'
 CORE_DIR        = '/core'

@@ -14,7 +14,9 @@ class Lang_UI(Base_UI):
 
         com = f"""/usr/bin/protoc \
         -I {dir_protos} \
+        --grpc_out={dir_output} \
         --csharp_out={dir_output} \
+        --plugin=protoc-gen-grpc={plugin_path_csharp} \
         {" ".join(files)}"""
         
         print(com)
