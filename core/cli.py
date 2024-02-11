@@ -23,14 +23,14 @@ class Polyglot:
     plugin_path_doc = '/usr/bin/protoc-gen-doc'
     
     @staticmethod
-    def get_service_info(name:str, key:str='files') -> dict[str, list[str]]:
+    def get_service_info(name:str, key:str = 'files') -> dict[str, list[str]] | list[str]:
         with open(services_yaml, 'r') as file:
             data = yaml.safe_load(file)
             
             if name=="":
                 return {n: data[n][key] for n in data}
             else:
-                return {name: data[name][key]}
+                return data[name][key]
 
     @staticmethod
     def get_files_from_directory(dir: str):
@@ -84,19 +84,20 @@ class Base_UI:
             print("ERROR: Use a language")
             exit(1)
         
-        services = Polyglot.get_service_info(name)
+        files = Polyglot.get_service_info(name)
+        self._compile(ROOT_PROTOS, self._get_dir_output(name), files)
+            
+        self.doc()
         
+    def _get_dir_output(self, name):
         lang_name = os.path.basename(os.path.dirname(os.path.realpath(sys.argv[0])))
         # converts ./python/cli.py -> /core/python/cli.py -> /core/python -> python
         
-        for name, files in services.items():
-            self._compile(ROOT_PROTOS, join(OUTPUT_ROOT, lang_name, name), files)
-            
-        self.doc()
+        return join(OUTPUT_ROOT, lang_name, name)
 
     @staticmethod
     def doc(md=True, html=False):
-        for name, files in Polyglot.get_service_info("").items():
+        for name, files in Polyglot.get_service_info(name='').items():
             aux = ' '.join(files)
             os.makedirs(DOC_OUTPUT_DIR, exist_ok=True)
             if md:

@@ -10,7 +10,7 @@ Linux x86_64
 
 ### Getting started
 1) Build prepared [docker image](docker/protoc-polyglot-x64.dockerfile)
-2) `alias DOCKER_RUN='docker run --rm-v [input protos dir]:/data/protos -v [output dir]:/data/output  protocpolyglot/protoc-polyglot'`
+2) `alias DOCKER_RUN='docker run --rm -v [input protos dir]:/data/protos -v [output dir]:/data/output  protocpolyglot/protoc-polyglot'`
 3) `DOCKER_RUN [command]`
 
 ### List of commands:

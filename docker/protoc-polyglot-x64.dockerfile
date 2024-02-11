@@ -11,9 +11,12 @@ RUN apt update &&\
 WORKDIR /opt
 
 # grpc
-ARG CONAN_VERSION=2.0.10
+ARG CONAN_VERSION=2.0.17
+ENV CONAN_VERSION=$CONAN_VERSION
 ARG GRPC_VERSION=1.54.3
+ENV GRPC_VERSION=$GRPC_VERSION
 ARG PROTOBUF_VERSION=3.21.12
+ENV PROTOBUF_VERSION=$PROTOBUF_VERSION
 RUN pip install conan==${CONAN_VERSION} &&\
     conan profile detect &&\
     conan install --requires protobuf/${PROTOBUF_VERSION} -b=missing -of protobuf --deployer direct_deploy -r conancenter &&\
