@@ -30,3 +30,33 @@ x86_64
 - `DOCKER_RUN python/cli.py protoc bookclub`
 - `DOCKER_RUN js/cli.py protoc`
 - `DOCKER_RUN cli.py doc`
+
+
+## Contribution
+
+We love that you are interested in helping us with the development of the protoc-polyglot project.
+To make the process of contributing as simple as possible we have created a couple of guidelines on how to contribute.
+
+### Issue tracking and solving
+
+We track every issue in [YouTrack](https://protopolyglot.youtrack.cloud/dashboard). Before solving any bug, make sure it's
+reported in [YouTrack](https://protopolyglot.youtrack.cloud/dashboard) and not already solved.
+
+**Make sure to solve only one issue at a time.**
+
+### Fork & Pull Request
+
+1. Create a fork of this repository
+2. Clone your fork to your computer
+3. Create a new branch in the forked repository from the base branch `dev` with a meaningful name
+4. Solve the issue
+5. Push your changes to the Fork repository.
+6. Create a Pull Request from your branch to the `dev` branch
+ ( GitHub documentation about Pull Requests: https://help.github.com/articles/using-pull-requests)
+
+The Pull Request should have a meaningful title, information about the changes you have made,
+and a link to the issue in [YouTrack](https://protopolyglot.youtrack.cloud/dashboard).
+
+Do not add unnecessary files, and make sure not to push any sensitive personal information.
+
+ ```Protoc-polyglot team - protoc-polyglot@proton.me```
