@@ -19,10 +19,8 @@ jobs:
       run: echo "Tag=$(date +%s)" >> $GITHUB_ENV
     - name: Build the base Docker image
       run: docker build -t protoc-polyglot-x64:$Tag -f protoc-polyglot-x64.dockerfile .
-      working-directory: ./docker
-    - name: Build the server Docker image # This should be  a separate job but we do not upload the base image
+    - name: Build the server Docker image # This should be a separate job, but we do not upload the base image
       run: docker build -t protoc-polyglot-server-x64:$Tag --build-arg base_image_tag=$Tag -f docker/protoc-polyglot-server-x64.dockerfile .
-
     - name: Tag docker image
       run: docker tag protoc-polyglot-x64:$Tag protoc-polyglot-x64:1.54.3
     - name: Test list services
