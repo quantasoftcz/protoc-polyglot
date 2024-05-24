@@ -52,6 +52,9 @@ class Polyglot:
         return zip_file
 
 class Base_UI:
+    def download_grpc(self, grpc_version, protobuf_version):
+        pass
+    
     def list(self):
         with os.scandir(CORE_DIR) as entries:
             print('Supported languages:')
