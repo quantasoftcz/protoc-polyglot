@@ -4,26 +4,23 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.sdist]
 include = [
-  "core/*",
+  "protoc_polyglot/*",
 ]
 
 [tool.hatch.build.targets.wheel]
 include = [
-  "core/*",
+  "protoc_polyglot/*",
 ]
 
 #[app]
-#module = "core"
+#module = "protoc_polyglot"
 
-#[project]
-#name = "protoc-polyglot"
-
-[tool.hatch.build.targets.wheel.sources]
-"core" = "protoc_polyglot"
+#[tool.hatch.build.targets.wheel.sources]
+#"protoc_polyglot" = "protoc_polyglot"
 
 [project]
 name = "protoc_polyglot"
-version = "0.0.1-22"
+version = "0.0.1-61"
 license = {text = "MIT License"}
 authors = [
   { name="Milan Pultar", email="milan.pultar@gmail.com" },
@@ -50,11 +47,11 @@ Issues = "https://github.com/pypa/sampleproject/issues"
 [bdist_wheel]
 universal=1
 
-[tool.hatch.scripts]
-protoc-polyglot = "core.wrapper:execute"
+#[tool.hatch.scripts]
+#protoc-polyglot = "protoc_polyglot.wrapper:execute"
 
 [project.scripts]
-protoc-polyglot = "core.wrapper:execute"
+protoc-polyglot = "protoc_polyglot.wrapper:execute"
 
-[tool.hatch.build.target.sdist.force-include]
-"core" = "core/*"
+#[tool.hatch.build.target.sdist.force-include]
+#"protoc_polyglot" = "protoc_polyglot/*"

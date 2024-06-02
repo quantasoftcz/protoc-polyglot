@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import os, sys
 sys.path.insert(0, os.path.abspath('..'))
-from core.cli import *
+from protoc_polyglot.cli import *
 
 
 class Lang_UI(Base_UI):

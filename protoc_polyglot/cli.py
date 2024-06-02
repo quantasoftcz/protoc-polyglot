@@ -6,16 +6,13 @@ from zipfile import ZipFile
 import requests
 
 
-DATA_DIR        = '/data'
-CORE_DIR        = '/core'
-ROOT_PROTOS     = join(DATA_DIR, 'protos')
-OUTPUT_ROOT     = join(DATA_DIR, 'output')
-DOC_OUTPUT_DIR  = join(OUTPUT_ROOT, 'doc')
-
-services_yaml   = join(ROOT_PROTOS, 'services.yml')
-
 class Settings:
-    def __init__(self, plugins_base_path='/usr/bin', grpc_version="1.54.3", protobuf_version="3.21.12"):
+    def __init__(self,
+                 plugins_base_path='/usr/bin',
+                 grpc_version="1.54.3",
+                 protobuf_version="3.21.12",
+                 DATA_DIR='/data',
+                 CORE_DIR='/core'):
         self.plugins_base_path = plugins_base_path
         self.grpc_version = grpc_version
         self.protobuf_version = protobuf_version
@@ -26,10 +23,18 @@ class Settings:
         self.plugin_path_go = f'{plugins_base_path}/protoc-gen-go'
         self.plugin_path_csharp = f'{plugins_base_path}/grpc_csharp_plugin'
         self.plugin_path_doc = f'{plugins_base_path}/protoc-gen-doc'
+        
+        self.DATA_DIR        = DATA_DIR
+        self.CORE_DIR        = CORE_DIR
+        self.ROOT_PROTOS     = join(DATA_DIR, 'protos')
+        self.OUTPUT_ROOT     = join(DATA_DIR, 'output')
+        self.DOC_OUTPUT_DIR  = join(self.OUTPUT_ROOT, 'doc')
+        
+        self.services_yaml   = join(self.ROOT_PROTOS, 'services.yml')
     
 class Tools:
     @staticmethod
-    def get_service_info(name:str, key:str = 'files') -> dict[str, list[str]] | list[str]:
+    def get_service_info(services_yaml, name:str, key:str = 'files') -> dict[str, list[str]] | list[str]:
         with open(services_yaml, 'r') as file:
             data = yaml.safe_load(file)
             
@@ -95,14 +100,23 @@ class Base_UI:
             
     
     def list(self):
-        with os.scandir(CORE_DIR) as entries:
+        print(os.getcwd())
+        
+        with os.scandir(self.settings.CORE_DIR) as entries:
             print('Supported languages:')
             folders = [entry.name for entry in entries if entry.is_dir() and entry.name not in ['__pycache__']]
             for f in folders:
                 print(f)
         
-        print()
-        with open(services_yaml, 'r') as file:
+        # if self.settings.CORE_DIR == '':
+        #     print('Hello world from polyglot')
+        #     exit()
+        
+        # print('CCCCCCCCC')
+        # print()
+        exit()
+        
+        with open(self.settings.services_yaml, 'r') as file:
             data = yaml.safe_load(file)
             print('Found services:')
             for name in data:
@@ -131,8 +145,8 @@ class Base_UI:
             print("ERROR: Use a language")
             exit(1)
         
-        files = Tools.get_service_info(name)
-        self._compile(ROOT_PROTOS, self._get_dir_output(name), files)
+        files = Tools.get_service_info(self.settings.services_yaml, name)
+        self._compile(self.settings.ROOT_PROTOS, self._get_dir_output(name), files)
             
         self.doc()
         
@@ -140,27 +154,27 @@ class Base_UI:
         lang_name = os.path.basename(os.path.dirname(os.path.realpath(sys.argv[0])))
         # converts ./python/cli.py -> /core/python/cli.py -> /core/python -> python
         
-        return join(OUTPUT_ROOT, lang_name, name)
+        return join(self.settings.OUTPUT_ROOT, lang_name, name)
 
     def doc(self, md=True, html=False):
-        for name, files in Tools.get_service_info(name='').items():
+        for name, files in Tools.get_service_info(self.settings.services_yaml, name='').items():
             aux = ' '.join(files)
-            os.makedirs(DOC_OUTPUT_DIR, exist_ok=True)
+            os.makedirs(self.settings.DOC_OUTPUT_DIR, exist_ok=True)
             if md:
-                com = f'protoc -I {ROOT_PROTOS} --plugin=protoc-gen-doc={self.settings.plugin_path_doc} --doc_out={DOC_OUTPUT_DIR} --doc_opt=markdown,{name}.md {aux}'
+                com = f'protoc -I {self.settings.ROOT_PROTOS} --plugin=protoc-gen-doc={self.settings.plugin_path_doc} --doc_out={self.settings.DOC_OUTPUT_DIR} --doc_opt=markdown,{name}.md {aux}'
                 print(com)
                 os.system(com)
 
                 # fix links by "a name" -> "a id"
-                text = open(join(DOC_OUTPUT_DIR, f'{name}.md'), 'r', encoding="utf-8").read()
+                text = open(join(self.settings.DOC_OUTPUT_DIR, f'{name}.md'), 'r', encoding="utf-8").read()
                 text = text.replace('<a name=', '<a id=')
                 text = text.replace(' &lt;br&gt;', ' <br>')
-                open(join(DOC_OUTPUT_DIR, f'{name}.md'), 'w', encoding="utf-8").write(text)
+                open(join(self.settings.DOC_OUTPUT_DIR, f'{name}.md'), 'w', encoding="utf-8").write(text)
             if html:
-                com = f'protoc -I {ROOT_PROTOS} --plugin=protoc-gen-doc={self.settings.plugin_path_doc} --doc_out={DOC_OUTPUT_DIR} --doc_opt=html,{name}.html {aux}'
+                com = f'protoc -I {self.settings.ROOT_PROTOS} --plugin=protoc-gen-doc={self.settings.plugin_path_doc} --doc_out={self.settings.DOC_OUTPUT_DIR} --doc_opt=html,{name}.html {aux}'
                 print(com)
                 os.system(com)
-        print(f'\ndone, docs saved in {DOC_OUTPUT_DIR}')
+        print(f'\ndone, docs saved in {self.settings.DOC_OUTPUT_DIR}')
     
 
 if __name__ == '__main__':
