@@ -5,20 +5,18 @@ from core.cli import *
 
 
 class Lang_UI(Base_UI):
-    @staticmethod
-    def _compile(dir_protos:str, dir_output: str, files:list[str]) -> None:
+    plugin_name = 'grpc_python_plugin'
+    
+    def _compile(self, dir_protos:str, dir_output: str, files:list[str]) -> None:
         shutil.rmtree(dir_output, ignore_errors=True)
         os.makedirs(dir_output, exist_ok=False)
 
         com = f"""/usr/bin/protoc \
         -I {dir_protos} \
-        --plugin=protoc-gen-grpc={Polyglot.plugin_path_python} \
+        --plugin=protoc-gen-grpc={self.get_plugin_path()} \
         --grpc_out={dir_output} \
         --python_out={dir_output} \
         {" ".join(files)}"""
         
         print(com)
         os.system(com)
-
-if __name__ == '__main__':
-    Fire(Lang_UI)

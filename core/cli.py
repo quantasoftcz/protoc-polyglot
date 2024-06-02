@@ -3,6 +3,7 @@ import os, sys, shutil, yaml
 from os.path import dirname, basename, abspath, join
 from fire import Fire
 from zipfile import ZipFile
+import requests
 
 
 DATA_DIR        = '/data'
@@ -13,15 +14,20 @@ DOC_OUTPUT_DIR  = join(OUTPUT_ROOT, 'doc')
 
 services_yaml   = join(ROOT_PROTOS, 'services.yml')
 
-class Polyglot:
-    plugin_path_cpp = '/usr/bin/grpc_cpp_plugin'
-    plugin_path_python = '/usr/bin/grpc_python_plugin'
-    plugin_path_java = '/usr/bin/protoc-gen-grpc-java'
-    plugin_path_rust = '/usr/bin/protoc-gen-rust'
-    plugin_path_go = '/usr/bin/protoc-gen-go'
-    plugin_path_csharp = '/usr/bin/grpc_csharp_plugin'
-    plugin_path_doc = '/usr/bin/protoc-gen-doc'
+class Settings:
+    def __init__(self, plugins_base_path='/usr/bin', grpc_version="1.54.3", protobuf_version="3.21.12"):
+        self.plugins_base_path = plugins_base_path
+        self.grpc_version = grpc_version
+        self.protobuf_version = protobuf_version
+        
+        self.plugin_path_cpp = f'{plugins_base_path}/grpc_cpp_plugin'
+        self.plugin_path_java = f'{plugins_base_path}/protoc-gen-grpc-java'
+        self.plugin_path_rust = f'{plugins_base_path}/protoc-gen-rust'
+        self.plugin_path_go = f'{plugins_base_path}/protoc-gen-go'
+        self.plugin_path_csharp = f'{plugins_base_path}/grpc_csharp_plugin'
+        self.plugin_path_doc = f'{plugins_base_path}/protoc-gen-doc'
     
+class Tools:
     @staticmethod
     def get_service_info(name:str, key:str = 'files') -> dict[str, list[str]] | list[str]:
         with open(services_yaml, 'r') as file:
@@ -51,9 +57,42 @@ class Polyglot:
                     zip.write(filepath, filepath[len(dir):])
         return zip_file
 
+    @staticmethod
+    def download_file(name, saveto):
+        url = f"https://github.com/quantasoftcz/protoc-polyglot/files/{name}"
+        response = requests.get(url)
+        
+        if response.status_code == 200:
+            os.makedirs(dirname(saveto), exist_ok=True)
+            with open(saveto, 'wb') as f:
+                f.write(response.content)
+            return True
+        else:
+            print(f"Failed to download {url}. Status code: {response.status_code}")
+            return False
+
 class Base_UI:
-    def download_grpc(self, grpc_version, protobuf_version):
-        pass
+    def __init__(self, settings=None):
+        if settings:
+            self.settings = settings
+    
+    def get_plugin_path(self) -> str:
+        return join(self.settings.plugins_base_path, self.plugin_name)
+    
+    def get_grpc_path(self) -> str:
+        return "plugins/grpc"
+    
+    def download_grpc_and_protobuf(self):
+        name = f"15369526/grpc-{self.settings.grpc_version}_protobuf-{self.settings.protobuf_version}.zip"
+        if not os.path.exists(self.get_grpc_path()):
+            print("gRPC missing, downloading...")
+        return Tools.download_file(name, self.get_grpc_path())
+        
+    def download_plugin(self):
+        if not os.path.exists(self.get_plugin_path()):
+            print("Plugin missing, downloading...")
+        return Tools.download_file("grpc_python_plugin", self.get_plugin_path())
+            
     
     def list(self):
         with os.scandir(CORE_DIR) as entries:
@@ -77,17 +116,22 @@ class Base_UI:
             exit(1)
 
         dir_protos = os.path.abspath(dir)
-        files = Polyglot.get_files_from_directory(dir_protos)
+        files = Tools.get_files_from_directory(dir_protos)
         dir_output = join(dir_protos, "output")
         self._compile(dir_protos, dir_output, files)
-        return Polyglot.zip_directory(dir_output)
+        return Tools.zip_directory(dir_output)
     
     def protoc(self, name:str=""):
+        if not self.download_grpc_and_protobuf():
+            raise RuntimeError("Could not find gRPC and Protobuf package")
+        if not self.download_plugin():
+            raise RuntimeError(f"Could not find {name} release")
+        
         if self.__class__.__name__ == "Base_UI":
             print("ERROR: Use a language")
             exit(1)
         
-        files = Polyglot.get_service_info(name)
+        files = Tools.get_service_info(name)
         self._compile(ROOT_PROTOS, self._get_dir_output(name), files)
             
         self.doc()
@@ -98,13 +142,12 @@ class Base_UI:
         
         return join(OUTPUT_ROOT, lang_name, name)
 
-    @staticmethod
-    def doc(md=True, html=False):
-        for name, files in Polyglot.get_service_info(name='').items():
+    def doc(self, md=True, html=False):
+        for name, files in Tools.get_service_info(name='').items():
             aux = ' '.join(files)
             os.makedirs(DOC_OUTPUT_DIR, exist_ok=True)
             if md:
-                com = f'protoc -I {ROOT_PROTOS} --plugin=protoc-gen-doc={Polyglot.plugin_path_doc} --doc_out={DOC_OUTPUT_DIR} --doc_opt=markdown,{name}.md {aux}'
+                com = f'protoc -I {ROOT_PROTOS} --plugin=protoc-gen-doc={self.settings.plugin_path_doc} --doc_out={DOC_OUTPUT_DIR} --doc_opt=markdown,{name}.md {aux}'
                 print(com)
                 os.system(com)
 
@@ -114,7 +157,7 @@ class Base_UI:
                 text = text.replace(' &lt;br&gt;', ' <br>')
                 open(join(DOC_OUTPUT_DIR, f'{name}.md'), 'w', encoding="utf-8").write(text)
             if html:
-                com = f'protoc -I {ROOT_PROTOS} --plugin=protoc-gen-doc={Polyglot.plugin_path_doc} --doc_out={DOC_OUTPUT_DIR} --doc_opt=html,{name}.html {aux}'
+                com = f'protoc -I {ROOT_PROTOS} --plugin=protoc-gen-doc={self.settings.plugin_path_doc} --doc_out={DOC_OUTPUT_DIR} --doc_opt=html,{name}.html {aux}'
                 print(com)
                 os.system(com)
         print(f'\ndone, docs saved in {DOC_OUTPUT_DIR}')

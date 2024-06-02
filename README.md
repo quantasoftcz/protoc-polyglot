@@ -60,3 +60,5 @@ and a link to the issue in [YouTrack](https://protopolyglot.youtrack.cloud/dashb
 Do not add unnecessary files, and make sure not to push any sensitive personal information.
 
  ```Protoc-polyglot team - protoc-polyglot@proton.me```
+ 
+protoc-polyglot python protoc

@@ -12,9 +12,18 @@ include = [
   "core/*",
 ]
 
+#[app]
+#module = "core"
+
+#[project]
+#name = "protoc-polyglot"
+
+[tool.hatch.build.targets.wheel.sources]
+"core" = "protoc_polyglot"
+
 [project]
 name = "protoc_polyglot"
-version = "0.0.1"
+version = "0.0.1-22"
 license = {text = "MIT License"}
 authors = [
   { name="Milan Pultar", email="milan.pultar@gmail.com" },
@@ -28,6 +37,11 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+dependencies = [
+  "fire",
+  "pyyaml",
+  "requests",
+]
 
 [project.urls]
 Homepage = "https://github.com/pypa/sampleproject"
@@ -35,3 +49,12 @@ Issues = "https://github.com/pypa/sampleproject/issues"
 
 [bdist_wheel]
 universal=1
+
+[tool.hatch.scripts]
+protoc-polyglot = "core.wrapper:execute"
+
+[project.scripts]
+protoc-polyglot = "core.wrapper:execute"
+
+[tool.hatch.build.target.sdist.force-include]
+"core" = "core/*"

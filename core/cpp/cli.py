@@ -7,8 +7,7 @@ from glob import glob
 
 
 class Lang_UI(Base_UI):
-    @staticmethod
-    def _compile(dir_protos:str, dir_output: str, files:list[str]) -> None:
+    def _compile(self, dir_protos:str, dir_output: str, files:list[str]) -> None:
         dir_src = join(dir_output, 'src')
         dir_include = join(dir_output, 'include')
 
@@ -18,7 +17,7 @@ class Lang_UI(Base_UI):
         os.makedirs(dir_include, exist_ok=True)
 
         com = f'protoc -I {dir_protos} \
-        --plugin=protoc-gen-grpc={Polyglot.plugin_path_cpp} \
+        --plugin=protoc-gen-grpc={self.settings.plugin_path_cpp} \
         --grpc_out={dir_src} \
         --cpp_out={dir_src} \
         {" ".join(files)}'

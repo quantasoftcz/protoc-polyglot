@@ -5,14 +5,13 @@ from core.cli import *
 
 
 class Lang_UI(Base_UI):
-    @staticmethod
-    def _compile(dir_protos:str, dir_output: str, files:list[str]) -> None:
+    def _compile(self, dir_protos:str, dir_output: str, files:list[str]) -> None:
         shutil.rmtree(dir_output, ignore_errors=True)
         os.makedirs(dir_output, exist_ok=True)
         print(f'mkdir {dir_output}')
 
         com = f'protoc -I {dir_protos} \
-        --plugin=protoc-gen-grpc_java={Polyglot.plugin_path_java} \
+        --plugin=protoc-gen-grpc_java={self.settings.plugin_path_java} \
         --grpc_java_out={dir_output} \
         --java_out={dir_output} \
         {" ".join(files)}'
