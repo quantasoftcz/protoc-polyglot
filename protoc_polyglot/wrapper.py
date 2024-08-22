@@ -28,5 +28,6 @@ def execute(language:str="", function:str="", *args):
         print(f"Language '{language}' not found.")
     except Exception as e:
         print(f"An error occurred: {str(e)}")
-    
-Fire(execute)
+
+def main():
+    Fire(execute)

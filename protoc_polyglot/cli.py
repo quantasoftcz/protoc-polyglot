@@ -12,7 +12,7 @@ class Settings:
                  grpc_version="1.54.3",
                  protobuf_version="3.21.12",
                  DATA_DIR='/data',
-                 CORE_DIR='/core'):
+                 CORE_DIR='/protoc_polyglot'):
         self.plugins_base_path = plugins_base_path
         self.grpc_version = grpc_version
         self.protobuf_version = protobuf_version
@@ -80,7 +80,9 @@ class Base_UI:
     def __init__(self, settings=None):
         if settings:
             self.settings = settings
-    
+        else:
+            self.settings = Settings()
+
     def get_plugin_path(self) -> str:
         return join(self.settings.plugins_base_path, self.plugin_name)
     
@@ -112,8 +114,6 @@ class Base_UI:
         #     print('Hello world from polyglot')
         #     exit()
         
-        # print('CCCCCCCCC')
-        # print()
         exit()
         
         with open(self.settings.services_yaml, 'r') as file:
@@ -135,7 +135,7 @@ class Base_UI:
         self._compile(dir_protos, dir_output, files)
         return Tools.zip_directory(dir_output)
     
-    def protoc(self, name:str=""):
+    def protoc(self, compile_func, name:str=""):
         if not self.download_grpc_and_protobuf():
             raise RuntimeError("Could not find gRPC and Protobuf package")
         if not self.download_plugin():
@@ -146,8 +146,8 @@ class Base_UI:
             exit(1)
         
         files = Tools.get_service_info(self.settings.services_yaml, name)
-        self._compile(self.settings.ROOT_PROTOS, self._get_dir_output(name), files)
-            
+        compile_func(self.settings.ROOT_PROTOS, self._get_dir_output(name), files)
+
         self.doc()
         
     def _get_dir_output(self, name):

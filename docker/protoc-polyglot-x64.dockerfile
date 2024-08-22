@@ -3,7 +3,7 @@
 FROM ubuntu:22.04
 
 
-ARG CMAKE_VERSION=3.27.6
+ARG CMAKE_VERSION=3.30.2
 RUN apt update &&\
     apt install -y git wget g++ build-essential python3-dev python3-pip &&\
     pip install fire cmake==${CMAKE_VERSION}
@@ -11,7 +11,7 @@ RUN apt update &&\
 WORKDIR /opt
 
 # grpc
-ARG CONAN_VERSION=2.0.17
+ARG CONAN_VERSION=2.6.0
 ENV CONAN_VERSION=$CONAN_VERSION
 ARG GRPC_VERSION=1.54.3
 ENV GRPC_VERSION=$GRPC_VERSION
@@ -92,8 +92,8 @@ RUN mkdir go; cd go &&\
 # location: /opt/go
 
 
-ENV PATH="$PATH:/root/go/bin:/core"
+ENV PATH="$PATH:/root/go/bin:/core:/protoc_polyglot"
 
-COPY core /core
+COPY protoc_polyglot /protoc_polyglot
 
-WORKDIR /core
+WORKDIR /protoc_polyglot

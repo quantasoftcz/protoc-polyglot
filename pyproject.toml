@@ -12,15 +12,9 @@ include = [
   "protoc_polyglot/*",
 ]
 
-#[app]
-#module = "protoc_polyglot"
-
-#[tool.hatch.build.targets.wheel.sources]
-#"protoc_polyglot" = "protoc_polyglot"
-
 [project]
 name = "protoc_polyglot"
-version = "0.0.1-61"
+version = "0.0.1-72"
 license = {text = "MIT License"}
 authors = [
   { name="Milan Pultar", email="milan.pultar@gmail.com" },
@@ -47,11 +41,5 @@ Issues = "https://github.com/pypa/sampleproject/issues"
 [bdist_wheel]
 universal=1
 
-#[tool.hatch.scripts]
-#protoc-polyglot = "protoc_polyglot.wrapper:execute"
-
 [project.scripts]
-protoc-polyglot = "protoc_polyglot.wrapper:execute"
-
-#[tool.hatch.build.target.sdist.force-include]
-#"protoc_polyglot" = "protoc_polyglot/*"
+protoc-polyglot = "protoc_polyglot.wrapper:main"
