@@ -96,9 +96,11 @@ class Base_UI:
         return Tools.download_file(name, self.get_grpc_path())
         
     def download_plugin(self):
+        assert hasattr(self, 'plugin_name'), "This function can only be called on Lang_UI"
+
         if not os.path.exists(self.get_plugin_path()):
             print("Plugin missing, downloading...")
-        return Tools.download_file("grpc_python_plugin", self.get_plugin_path())
+        return Tools.download_file(self.plugin_name, self.get_plugin_path())
             
     
     def list(self):
@@ -109,10 +111,6 @@ class Base_UI:
             folders = [entry.name for entry in entries if entry.is_dir() and entry.name not in ['__pycache__']]
             for f in folders:
                 print(f)
-        
-        # if self.settings.CORE_DIR == '':
-        #     print('Hello world from polyglot')
-        #     exit()
         
         exit()
         
