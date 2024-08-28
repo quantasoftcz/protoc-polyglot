@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  DOCKER_RUN: docker run --rm -v $GITHUB_WORKSPACE/core:/core -v $GITHUB_WORKSPACE/output:/data/output -v $(pwd)/tests:/data/tests -v $GITHUB_WORKSPACE/samples:/data/protos protoc-polyglot-x64:1.54.3
+  DOCKER_RUN: docker run --rm -v $GITHUB_WORKSPACE/output:/data/output -v $(pwd)/tests:/data/tests -v $GITHUB_WORKSPACE/samples:/data/protos protocpolyglot/protoc-polyglot
 
 jobs:
   build_and_test:
