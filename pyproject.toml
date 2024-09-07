@@ -42,4 +42,4 @@ Issues = "https://github.com/pypa/sampleproject/issues"
 universal=1
 
 [project.scripts]
-protoc-polyglot = "protoc_polyglot.wrapper:main"
+protoc-polyglot = "protoc-polyglot.wrapper:main"

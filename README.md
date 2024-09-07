@@ -61,4 +61,17 @@ Do not add unnecessary files, and make sure not to push any sensitive personal i
 
  ```Protoc-polyglot team - protoc-polyglot@proton.me```
  
+
+### Supported commands
+
 protoc-polyglot python protoc
+
+protoc-polyglot [language] [service-yml/directory/file] 
+  -s [service name]
+  -d [directory input]
+  -f [files]
+  -o [output dir, default protoc-output -> default protoc-output/bookclub/python ...]
+
+protoc-polyglot list
+
+protoc-polyglot python file.yml

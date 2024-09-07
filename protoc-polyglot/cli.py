@@ -12,7 +12,7 @@ class Settings:
                  grpc_version="1.54.3",
                  protobuf_version="3.21.12",
                  DATA_DIR='/data',
-                 CORE_DIR='/protoc_polyglot'):
+                 CORE_DIR='/protoc-polyglot'):
         self.plugins_base_path = plugins_base_path
         self.grpc_version = grpc_version
         self.protobuf_version = protobuf_version

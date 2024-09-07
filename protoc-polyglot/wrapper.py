@@ -9,12 +9,12 @@ from protoc_polyglot.cli import *
 def execute(language:str="", function:str="", *args):
     try:
         if language=='':
-            setup_module = importlib.import_module('protoc_polyglot.cli', package="protoc_polyglot")
+            setup_module = importlib.import_module('protoc-polyglot.cli', package="protoc-polyglot")
             Lang_UI = getattr(setup_module, 'Base_UI')
             settings = Settings('plugins', DATA_DIR='', CORE_DIR=dirname(abspath(__file__)))
             lang_UI = Lang_UI(settings)
         else:
-            setup_module = importlib.import_module('protoc_polyglot.' + language + '.cli', package="protoc_polyglot")
+            setup_module = importlib.import_module('protoc-polyglot.' + language + '.cli', package="protoc-polyglot")
             Lang_UI = getattr(setup_module, 'Lang_UI')
             settings = Settings('plugins', DATA_DIR='', CORE_DIR=dirname(abspath(__file__)))
             lang_UI = Lang_UI(settings)
