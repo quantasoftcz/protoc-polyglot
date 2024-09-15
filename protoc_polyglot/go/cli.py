@@ -5,13 +5,15 @@ from protoc_polyglot.cli import *
 
 
 class Lang_UI(Base_UI):
+    plugin_name = 'protoc-gen-go'
+
     def _compile(self, dir_protos:str, dir_output: str, files:list[str]) -> None:
         shutil.rmtree(dir_output, ignore_errors=True)
         os.makedirs(dir_output, exist_ok=False)
 
         com = f"""/usr/bin/protoc \
         -I {ROOT_PROTOS} \
-        --plugin=protoc-gen-go={self.settings.plugin_path_go} \
+        --plugin=protoc-gen-go={self.get_plugin_path()} \
         --go_out={dir_output} \
         --go_opt=paths=source_relative \
         --go-grpc_out={dir_output} \

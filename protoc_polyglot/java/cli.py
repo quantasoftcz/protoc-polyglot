@@ -5,13 +5,15 @@ from protoc_polyglot.cli import *
 
 
 class Lang_UI(Base_UI):
+    plugin_name = 'protoc-gen-grpc-java'
+
     def _compile(self, dir_protos:str, dir_output: str, files:list[str]) -> None:
         shutil.rmtree(dir_output, ignore_errors=True)
         os.makedirs(dir_output, exist_ok=True)
         print(f'mkdir {dir_output}')
 
         com = f'protoc -I {dir_protos} \
-        --plugin=protoc-gen-grpc_java={self.settings.plugin_path_java} \
+        --plugin=protoc-gen-grpc_java={self.get_plugin_path()} \
         --grpc_java_out={dir_output} \
         --java_out={dir_output} \
         {" ".join(files)}'

@@ -17,7 +17,7 @@ class Lang_UI(Base_UI):
         os.makedirs(dir_include, exist_ok=True)
 
         com = f'protoc -I {dir_protos} \
-        --plugin=protoc-gen-grpc={self.settings.plugin_path_cpp} \
+        --plugin=protoc-gen-grpc={self.get_plugin_path()} \
         --grpc_out={dir_src} \
         --cpp_out={dir_src} \
         {" ".join(files)}'

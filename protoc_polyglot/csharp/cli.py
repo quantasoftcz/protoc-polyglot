@@ -13,7 +13,7 @@ class Lang_UI(Base_UI):
         -I {dir_protos} \
         --grpc_out={dir_output} \
         --csharp_out={dir_output} \
-        --plugin=protoc-gen-grpc={self.settings.plugin_path_csharp} \
+        --plugin=protoc-gen-grpc={self.get_plugin_path()} \
         {" ".join(files)}"""
         
         print(com)
