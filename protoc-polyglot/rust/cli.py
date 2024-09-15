@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.abspath('..'))
 from protoc_polyglot.cli import *
 
 class Lang_UI(Base_UI):
+    plugin_name = 'protoc-gen-rust'
     
     def _compile(self, dir_protos: str, dir_output: str, files: list[str]) -> None:
         shutil.rmtree(dir_output, ignore_errors=True)
@@ -12,7 +13,7 @@ class Lang_UI(Base_UI):
         
         com = f"""/usr/bin/protoc \
         -I {dir_protos} \
-        --plugin=protoc-gen-rust={self.settings.plugin_path_rust} \
+        --plugin=protoc-gen-rust={self.get_plugin_path()} \
         --rust_out={dir_output} \
         {" ".join(files)}"""
         

@@ -16,12 +16,7 @@ class Settings:
         self.plugins_base_path = plugins_base_path
         self.grpc_version = grpc_version
         self.protobuf_version = protobuf_version
-        
-        self.plugin_path_cpp = f'{plugins_base_path}/grpc_cpp_plugin'
-        self.plugin_path_java = f'{plugins_base_path}/protoc-gen-grpc-java'
-        self.plugin_path_rust = f'{plugins_base_path}/protoc-gen-rust'
-        self.plugin_path_go = f'{plugins_base_path}/protoc-gen-go'
-        self.plugin_path_csharp = f'{plugins_base_path}/grpc_csharp_plugin'
+
         self.plugin_path_doc = f'{plugins_base_path}/protoc-gen-doc'
         
         self.DATA_DIR        = DATA_DIR
