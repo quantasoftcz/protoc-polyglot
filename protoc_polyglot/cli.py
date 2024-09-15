@@ -8,7 +8,7 @@ import requests
 
 class Settings:
     def __init__(self,
-                 plugins_base_path='/usr/bin',
+                 plugins_base_path='/opt',
                  grpc_version="1.54.3",
                  protobuf_version="3.21.12",
                  DATA_DIR='/data',
@@ -17,8 +17,12 @@ class Settings:
         self.grpc_version = grpc_version
         self.protobuf_version = protobuf_version
 
-        self.plugin_path_doc = f'{plugins_base_path}/protoc-gen-doc'
-        
+        self.plugin_path_doc = f'{plugins_base_path}/doc/protoc-gen-doc'
+
+        self.protobuf_folder = 'protobuf'
+        self.grpc_folder     = 'grpc'
+        self.languages_that_have_external_plugin = ['go', 'java', 'js', 'rust']
+
         self.DATA_DIR        = DATA_DIR
         self.CORE_DIR        = CORE_DIR
         self.ROOT_PROTOS     = join(DATA_DIR, 'protos')
@@ -72,32 +76,47 @@ class Tools:
             return False
 
 class Base_UI:
-    def __init__(self, settings=None):
+    def __init__(self, settings: Settings=None):
         if settings:
             self.settings = settings
         else:
             self.settings = Settings()
 
-    def get_plugin_path(self) -> str:
-        return join(self.settings.plugins_base_path, self.plugin_name)
+    def get_plugin_executable_path(self):
+        return join(self.get_plugin_dir(), self.plugin_name)
+
+    def get_plugin_dir(self) -> str:
+        return join(self.settings.plugins_base_path, self.get_language_name())
+
+    def get_protobuf_path(self) -> str:
+        return join(self.settings.plugins_base_path, self.settings.protobuf_folder)
     
     def get_grpc_path(self) -> str:
-        return "plugins/grpc"
-    
+        return join(self.settings.plugins_base_path, self.settings.grpc_folder)
+
+    def get_language_name(self):
+        assert hasattr(self, 'plugin_name'), "This function can only be called on Lang_UI"
+
+        language = basename(dirname(sys.argv[0]))
+        return language
+
     def download_grpc_and_protobuf(self):
-        name = f"15369526/grpc-{self.settings.grpc_version}_protobuf-{self.settings.protobuf_version}.zip"
-        if not os.path.exists(self.get_grpc_path()):
-            print("gRPC missing, downloading...")
+        if os.path.exists(self.get_grpc_path()) and os.path.exists(self.get_protobuf_path()):
+            return True
+
+        print("gRPC or Protobuf missing, downloading...")
+        name = f"grpc-{self.settings.grpc_version}_protobuf-{self.settings.protobuf_version}.zip"
         return Tools.download_file(name, self.get_grpc_path())
-        
+
     def download_plugin(self):
         assert hasattr(self, 'plugin_name'), "This function can only be called on Lang_UI"
 
-        if not os.path.exists(self.get_plugin_path()):
-            print("Plugin missing, downloading...")
-        return Tools.download_file(self.plugin_name, self.get_plugin_path())
-            
-    
+        if self.get_language_name() in self.settings.languages_that_have_external_plugin or os.path.exists(self.get_plugin_dir()):
+            return True
+
+        print("Plugin missing, downloading...")
+        return Tools.download_file(self.plugin_name, self.get_plugin_dir())
+
     def list(self):
         print(os.getcwd())
         
@@ -106,8 +125,6 @@ class Base_UI:
             folders = [entry.name for entry in entries if entry.is_dir() and entry.name not in ['__pycache__']]
             for f in folders:
                 print(f)
-        
-        exit()
         
         with open(self.settings.services_yaml, 'r') as file:
             data = yaml.safe_load(file)
@@ -128,7 +145,9 @@ class Base_UI:
         self._compile(dir_protos, dir_output, files)
         return Tools.zip_directory(dir_output)
     
-    def protoc(self, compile_func, name:str=""):
+    def protoc(self, name:str=""):
+        assert hasattr(self, 'plugin_name'), "This function can only be called on Lang_UI"
+
         if not self.download_grpc_and_protobuf():
             raise RuntimeError("Could not find gRPC and Protobuf package")
         if not self.download_plugin():
@@ -139,7 +158,7 @@ class Base_UI:
             exit(1)
         
         files = Tools.get_service_info(self.settings.services_yaml, name)
-        compile_func(self.settings.ROOT_PROTOS, self._get_dir_output(name), files)
+        self._compile(self.settings.ROOT_PROTOS, self._get_dir_output(name), files)
 
         self.doc()
         

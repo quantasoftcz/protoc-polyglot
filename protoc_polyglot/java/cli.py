@@ -13,7 +13,7 @@ class Lang_UI(Base_UI):
         print(f'mkdir {dir_output}')
 
         com = f'protoc -I {dir_protos} \
-        --plugin=protoc-gen-grpc_java={self.get_plugin_path()} \
+        --plugin=protoc-gen-grpc_java={self.get_plugin_executable_path()} \
         --grpc_java_out={dir_output} \
         --java_out={dir_output} \
         {" ".join(files)}'
