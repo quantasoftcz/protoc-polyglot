@@ -133,24 +133,15 @@ class Base_UI:
         self._compile(dir_protos, dir_output, files)
         return Tools.zip_directory(dir_output)
     
-    def protoc(self, compile_func, name:str=""):
-        if not self.download_grpc_and_protobuf():
-            raise RuntimeError("Could not find gRPC and Protobuf package")
-        if not self.download_plugin():
-            raise RuntimeError(f"Could not find {name} release")
-        
-        if self.__class__.__name__ == "Base_UI":
-            print("ERROR: Use a language")
-            exit(1)
-        
+    def protoc(self, name:str=""):
         files = Tools.get_service_info(self.settings.services_yaml, name)
-        compile_func(self.settings.ROOT_PROTOS, self._get_dir_output(name), files)
+        self._compile(self.settings.ROOT_PROTOS, self._get_dir_output(name), files)
 
         self.doc()
         
     def _get_dir_output(self, name):
         lang_name = os.path.basename(os.path.dirname(os.path.realpath(sys.argv[0])))
-        # converts ./python/cli.py -> /core/python/cli.py -> /core/python -> python
+        # converts ./python/cli.py -> /protoc_polyglot/python/cli.py -> /protoc_polyglot/python -> python
         
         return join(self.settings.OUTPUT_ROOT, lang_name, name)
 
