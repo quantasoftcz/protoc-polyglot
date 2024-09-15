@@ -20,3 +20,6 @@ class Lang_UI(Base_UI):
         
         print(com)
         os.system(com)
+
+if __name__ == '__main__':
+    Fire(Lang_UI)

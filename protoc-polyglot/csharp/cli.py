@@ -5,6 +5,8 @@ from protoc_polyglot.cli import *
 
 
 class Lang_UI(Base_UI):
+    plugin_name = 'grpc_csharp_plugin'
+
     def _compile(self, dir_protos:str, dir_output: str, files:list[str]) -> None:
         shutil.rmtree(dir_output, ignore_errors=True)
         os.makedirs(dir_output, exist_ok=False)

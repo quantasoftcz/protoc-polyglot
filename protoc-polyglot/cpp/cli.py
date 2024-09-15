@@ -7,6 +7,8 @@ from glob import glob
 
 
 class Lang_UI(Base_UI):
+    plugin_name = 'grpc_cpp_plugin'
+
     def _compile(self, dir_protos:str, dir_output: str, files:list[str]) -> None:
         dir_src = join(dir_output, 'src')
         dir_include = join(dir_output, 'include')
