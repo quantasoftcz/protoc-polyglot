@@ -1,17 +1,13 @@
 #!/usr/bin/python3
 import os, sys
 sys.path.insert(0, os.path.abspath('..'))
-from core.cli import *
+from protoc_polyglot.cli import *
 
 from glob import glob
 
 
 class Lang_UI(Base_UI):
-    protoc_plugin:str = plugin_path_cpp
-
-    @staticmethod
-    def _compile(dir_protos:str, output_dir: str, files:list[str]) -> None:
-        dir_output = join(output_dir, "cpp/")
+    def _compile(self, dir_protos:str, dir_output: str, files:list[str]) -> None:
         dir_src = join(dir_output, 'src')
         dir_include = join(dir_output, 'include')
 
@@ -21,7 +17,7 @@ class Lang_UI(Base_UI):
         os.makedirs(dir_include, exist_ok=True)
 
         com = f'protoc -I {dir_protos} \
-        --plugin=protoc-gen-grpc={Lang_UI.protoc_plugin} \
+        --plugin=protoc-gen-grpc={self.settings.plugin_path_cpp} \
         --grpc_out={dir_src} \
         --cpp_out={dir_src} \
         {" ".join(files)}'

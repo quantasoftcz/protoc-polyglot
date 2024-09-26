@@ -1,9 +1,9 @@
-# build: docker build -t protoc-polyglot-x64:1.54.3 -f protoc-polyglot-x64.dockerfile ..
-# peek: docker run --rm -v $(pwd)/core:/core -v $(pwd)/output:/data/output -v $(pwd)/samples:/data/protos protoc-polyglot-x64:1.54.3 bash
+# build: docker build -t protocpolyglot/protoc-polyglot:1.54.3 -f protoc-polyglot-x64.dockerfile ..; docker tag protocpolyglot/protoc-polyglot:1.54.3 protocpolyglot/protoc-polyglot
+# peek: docker run --rm -v $(pwd)/core:/core -it -v $(pwd)/output:/data/output -v $(pwd)/samples:/data/protos protocpolyglot/protoc-polyglot bash
 FROM ubuntu:22.04
 
 
-ARG CMAKE_VERSION=3.27.6
+ARG CMAKE_VERSION=3.30.2
 RUN apt update &&\
     apt install -y git wget g++ build-essential python3-dev python3-pip &&\
     pip install fire cmake==${CMAKE_VERSION}
@@ -11,9 +11,12 @@ RUN apt update &&\
 WORKDIR /opt
 
 # grpc
-ARG CONAN_VERSION=2.0.10
+ARG CONAN_VERSION=2.6.0
+ENV CONAN_VERSION=$CONAN_VERSION
 ARG GRPC_VERSION=1.54.3
+ENV GRPC_VERSION=$GRPC_VERSION
 ARG PROTOBUF_VERSION=3.21.12
+ENV PROTOBUF_VERSION=$PROTOBUF_VERSION
 RUN pip install conan==${CONAN_VERSION} &&\
     conan profile detect &&\
     conan install --requires protobuf/${PROTOBUF_VERSION} -b=missing -of protobuf --deployer direct_deploy -r conancenter &&\
@@ -89,8 +92,8 @@ RUN mkdir go; cd go &&\
 # location: /opt/go
 
 
-ENV PATH="$PATH:/root/go/bin:/core"
+ENV PATH="$PATH:/root/go/bin:/core:/protoc_polyglot"
 
-COPY core /core
+COPY protoc_polyglot /protoc_polyglot
 
-WORKDIR /core
+WORKDIR /protoc_polyglot
