@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.abspath('..'))
 from protoc_polyglot.cli import *
 
 
-class Lang_UI(Base_UI):
+class LanguageInterface(Base_UI):
     plugin_name = 'protoc-gen-grpc-java'
 
     def _compile(self, dir_protos:str, dir_output: str, files:list[str]) -> None:
@@ -22,4 +22,4 @@ class Lang_UI(Base_UI):
         os.system(com)
 
 if __name__ == '__main__':
-    Fire(Lang_UI)
+    Fire(LanguageInterface)

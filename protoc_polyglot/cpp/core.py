@@ -6,7 +6,7 @@ from protoc_polyglot.cli import *
 from glob import glob
 
 
-class Lang_UI(Base_UI):
+class LanguageInterface(Base_UI):
     plugin_name = 'grpc_cpp_plugin'
 
     def _compile(self, dir_protos:str, dir_output: str, files:list[str]) -> None:
@@ -38,4 +38,4 @@ class Lang_UI(Base_UI):
         return ret
 
 if __name__ == '__main__':
-    Fire(Lang_UI)
+    Fire(LanguageInterface)

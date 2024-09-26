@@ -1,1 +1,1 @@
-from .cli import Lang_UI as cli
+from .cli import LanguageInterface as cli

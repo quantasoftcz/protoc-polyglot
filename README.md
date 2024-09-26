@@ -71,6 +71,7 @@ protoc-polyglot [language] [service-yml/directory/file]
   -d [directory input]
   -f [files]
   -o [output dir, default protoc-output -> default protoc-output/bookclub/python ...]
+  -c [connection ip+port]
 
 protoc-polyglot list
 
