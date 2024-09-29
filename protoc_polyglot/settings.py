@@ -3,11 +3,14 @@ from os.path import join
 
 class Settings:
     def __init__(self,
+                 language,
                  plugins_base_path='/opt',
                  grpc_version="1.54.3",
                  protobuf_version="3.21.12",
                  DATA_DIR='/data',
                  CORE_DIR='/protoc-polyglot'):
+        self.language = language
+
         self.plugins_base_path = plugins_base_path
         self.grpc_version = grpc_version
         self.protobuf_version = protobuf_version

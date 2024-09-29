@@ -17,20 +17,15 @@ x86_64
 3) `DOCKER_RUN [command]`
 
 ### List of commands:
-- List available languages and services: \
-  `cli.py list`
-- Compile a service: \
-  `[language]/cli.py protoc [name]`
 - Compile all services: \
-  `[language]/cli.py protoc`
+  `cli.py -l [language] -y [path to services yml]`
+
+Documentation is create in the output folder after any compilation run.
 
 ### Examples:
 `alias DOCKER_RUN='docker run --rm -v $(pwd)/output:/data/output -v $(pwd)/doc:/data/doc -v $(pwd)/samples:/data/protos -v $(pwd)/tests:/data/tests protocpolyglot/protoc-polyglot'`
-- `DOCKER_RUN cli.py list`
-- `DOCKER_RUN python/cli.py protoc bookclub`
-- `DOCKER_RUN js/cli.py protoc`
-- `DOCKER_RUN cli.py doc`
-
+- `DOCKER_RUN cli.py --language python --service-yml /data/protos/services.yml`
+- `DOCKER_RUN cli.py -l cpp python -y /data/protos/services.yml`
 
 ## Contribution
 

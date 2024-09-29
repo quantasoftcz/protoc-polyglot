@@ -1,1 +1,1 @@
-from .cli import Base_UI as cli
+from .cli import CommonInterface as cli

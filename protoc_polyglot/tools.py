@@ -1,22 +1,22 @@
 #!/usr/bin/python3
-import os, sys, shutil, yaml
-from os.path import dirname, basename, abspath, join
-from fire import Fire
+import os
+import yaml
+from os.path import dirname, join
 from zipfile import ZipFile
 import requests
-from settings import Settings
 
 
 class Tools:
     @staticmethod
-    def get_service_info(services_yaml, name :str, key :str = 'files') -> dict[str, list[str]] | list[str]:
+    def get_service_info(services_yaml, name: str, key: str = 'files') -> dict[str, list[str]]:
         with open(services_yaml, 'r') as file:
             data = yaml.safe_load(file)
+            data = data['services']
 
-            if name=="":
+            if name == "":
                 return {n: data[n][key] for n in data}
             else:
-                return data[name][key]
+                return {name: data[name][key]}
 
     @staticmethod
     def get_files_from_directory(dir: str):

@@ -27,11 +27,13 @@ RUN pip install conan==${CONAN_VERSION} &&\
     rm -rf /opt/protobuf/lib &&\
     rm -rf /opt/grpc/lib &&\
     ln -s /opt/protobuf/bin/protoc /usr/bin/protoc &&\
-    ln -s /opt/grpc/bin/grpc_csharp_plugin /usr/bin/grpc_csharp_plugin &&\
-    ln -s /opt/grpc/bin/grpc_cpp_plugin /usr/bin/grpc_cpp_plugin &&\
+    mkdir /opt/csharp &&\
+    ln -s /opt/grpc/bin/grpc_csharp_plugin /opt/csharp/grpc_csharp_plugin &&\
+    mkdir /opt/cpp &&\
+    ln -s /opt/grpc/bin/grpc_cpp_plugin /opt/cpp/grpc_cpp_plugin &&\
     mkdir /opt/python &&\
-    ln -s /opt/grpc/bin/grpc_python_plugin /usr/bin/grpc_python_plugin
-# location: /opt/protobuf /opt/grpc
+    ln -s /opt/grpc/bin/grpc_python_plugin /opt/python/grpc_python_plugin
+# location: /opt/protobuf /opt/grpc /opt/csharp /opt/cpp /opt/python
 
 # protoc java
 ARG PROTOC_JAVA_VER=1.58.0

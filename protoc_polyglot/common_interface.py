@@ -5,20 +5,18 @@ from fire import Fire
 from zipfile import ZipFile
 import requests
 from settings import Settings
+from tools import Tools
 
 
 class CommonInterface:
     def __init__(self, settings: Settings=None):
-        if settings:
-            self.settings = settings
-        else:
-            self.settings = Settings()
+        self.settings = settings
 
     def get_plugin_executable_path(self):
         return join(self.get_plugin_dir(), self.plugin_name)
 
     def get_plugin_dir(self) -> str:
-        return join(self.settings.plugins_base_path, self.get_language_name())
+        return join(self.settings.plugins_base_path, self.get_language())
 
     def get_protobuf_path(self) -> str:
         return join(self.settings.plugins_base_path, self.settings.protobuf_folder)
@@ -26,11 +24,10 @@ class CommonInterface:
     def get_grpc_path(self) -> str:
         return join(self.settings.plugins_base_path, self.settings.grpc_folder)
 
-    def get_language_name(self):
+    def get_language(self):
         assert hasattr(self, 'plugin_name'), "This function can only be called on LanguageInterface"
 
-        language = basename(dirname(sys.argv[0]))
-        return language
+        return self.settings.language
 
     def download_grpc_and_protobuf(self):
         if os.path.exists(self.get_grpc_path()) and os.path.exists(self.get_protobuf_path()):
@@ -43,7 +40,7 @@ class CommonInterface:
     def download_plugin(self):
         assert hasattr(self, 'plugin_name'), "This function can only be called on LanguageInterface"
 
-        if self.get_language_name() in self.settings.languages_that_have_external_plugin or os.path.exists(self.get_plugin_dir()):
+        if self.get_language() not in self.settings.languages_that_have_external_plugin or os.path.exists(self.get_plugin_dir()):
             return True
 
         print("Plugin missing, downloading...")
@@ -67,7 +64,7 @@ class CommonInterface:
                     print(f'\t- {file}')
 
     def make(self, dir: str):
-        if self.__class__.__name__ == "Base_UI":
+        if self.__class__.__name__ == "CommonInterface":
             print("ERROR: Use a language")
             exit(1)
 
@@ -85,20 +82,18 @@ class CommonInterface:
         if not self.download_plugin():
             raise RuntimeError(f"Could not find {name} release")
         
-        if self.__class__.__name__ == "Base_UI":
+        if self.__class__.__name__ == "CommonInterface":
             print("ERROR: Use a language")
             exit(1)
         
-        files = Tools.get_service_info(self.settings.services_yaml, name)
-        self._compile(self.settings.ROOT_PROTOS, self._get_dir_output(name), files)
+        files_dict = Tools.get_service_info(self.settings.services_yaml, name)
+        for name, files in files_dict.items():
+            self._compile(self.settings.ROOT_PROTOS, self._get_dir_output(name), files)
 
         self.doc()
         
     def _get_dir_output(self, name:str):
-        lang_name = os.path.basename(os.path.dirname(os.path.realpath(sys.argv[0])))
-        # converts ./python/cli.py -> /core/python/cli.py -> /core/python -> python
-        
-        return join(self.settings.OUTPUT_ROOT, lang_name, name)
+        return join(self.settings.OUTPUT_ROOT, self.get_language(), name)
 
     def doc(self, md:bool=True, html:bool=False):
         for name, files in Tools.get_service_info(self.settings.services_yaml, name='').items():
@@ -119,7 +114,3 @@ class CommonInterface:
                 print(com)
                 os.system(com)
         print(f'\ndone, docs saved in {self.settings.DOC_OUTPUT_DIR}')
-    
-
-if __name__ == '__main__':
-    Fire(CommonInterface)
