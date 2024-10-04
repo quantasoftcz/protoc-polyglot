@@ -12,7 +12,7 @@ class Lang_UI(Base_UI):
         os.makedirs(dir_output, exist_ok=False)
 
         com = f"""/usr/bin/protoc \
-        -I {ROOT_PROTOS} \
+        -I {dir_protos} \
         --plugin=protoc-gen-go={self.get_plugin_path()} \
         --go_out={dir_output} \
         --go_opt=paths=source_relative \
