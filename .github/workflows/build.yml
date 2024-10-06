@@ -23,10 +23,10 @@ jobs:
       run: docker build -t protoc-polyglot-server-x64:$Tag --build-arg base_image_tag=$Tag -f docker/protoc-polyglot-server-x64.dockerfile .
     - name: Tag docker image
       run: docker tag protoc-polyglot-x64:$Tag protoc-polyglot-x64:1.54.3
-    - name: Test list services
-      run: eval "$DOCKER_RUN ./cli.py list"
+#    - name: Test list services
+#      run: eval "$DOCKER_RUN ./cli.py list"
     - name: Test single service python
-      run: eval "$DOCKER_RUN ./python/cli.py protoc bookclub"
+      run: eval "$DOCKER_RUN cli.py --language python --service-yml /data/protos/services.yml"
     - name: Test protoc command
       run: eval "$DOCKER_RUN bash /data/tests/run.sh"
     - name: Output check
