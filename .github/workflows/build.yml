@@ -26,7 +26,7 @@ jobs:
 #    - name: Test list services
 #      run: eval "$DOCKER_RUN ./cli.py list"
     - name: Test single service python
-      run: eval "$DOCKER_RUN cli.py --language python --service-yml /data/protos/services.yml"
+      run: eval "$DOCKER_RUN cli.py --languages python --service-yml /data/protos/services.yml"
     - name: Test protoc command
       run: eval "$DOCKER_RUN bash /data/tests/run.sh"
     - name: Output check

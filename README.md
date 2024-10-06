@@ -18,13 +18,13 @@ x86_64
 
 ### List of commands:
 - Compile all services: \
-  `cli.py -l [language] -y [path to services yml]`
+  `cli.py -l [languages] -y [path to services yml]`
 
 Documentation is create in the output folder after any compilation run.
 
 ### Examples:
 `alias DOCKER_RUN='docker run --rm -v $(pwd)/output:/data/output -v $(pwd)/doc:/data/doc -v $(pwd)/samples:/data/protos -v $(pwd)/tests:/data/tests protocpolyglot/protoc-polyglot'`
-- `DOCKER_RUN cli.py --language python --service-yml /data/protos/services.yml`
+- `DOCKER_RUN cli.py --languages python --service-yml /data/protos/services.yml`
 - `DOCKER_RUN cli.py -l cpp python -y /data/protos/services.yml`
 
 ## Contribution
@@ -61,7 +61,7 @@ Do not add unnecessary files, and make sure not to push any sensitive personal i
 
 protoc-polyglot python protoc
 
-protoc-polyglot [language] [service-yml/directory/file] 
+protoc-polyglot -l [languages] [service-yml/directory/file] 
   -s [service name]
   -d [directory input]
   -f [files]
