@@ -17,20 +17,15 @@ x86_64
 3) `DOCKER_RUN [command]`
 
 ### List of commands:
-- List available languages and services: \
-  `cli.py list`
-- Compile a service: \
-  `[language]/cli.py protoc [name]`
 - Compile all services: \
-  `[language]/cli.py protoc`
+  `cli.py -l [languages] -y [path to services yml]`
+
+Documentation is create in the output folder after any compilation run.
 
 ### Examples:
 `alias DOCKER_RUN='docker run --rm -v $(pwd)/output:/data/output -v $(pwd)/doc:/data/doc -v $(pwd)/samples:/data/protos -v $(pwd)/tests:/data/tests protocpolyglot/protoc-polyglot'`
-- `DOCKER_RUN cli.py list`
-- `DOCKER_RUN python/cli.py protoc bookclub`
-- `DOCKER_RUN js/cli.py protoc`
-- `DOCKER_RUN cli.py doc`
-
+- `DOCKER_RUN cli.py --languages python --service-yml /data/protos/services.yml`
+- `DOCKER_RUN cli.py -l cpp python -y /data/protos/services.yml`
 
 ## Contribution
 
@@ -61,4 +56,18 @@ Do not add unnecessary files, and make sure not to push any sensitive personal i
 
  ```Protoc-polyglot team - protoc-polyglot@proton.me```
  
+
+### Supported commands
+
 protoc-polyglot python protoc
+
+protoc-polyglot -l [languages] [service-yml/directory/file] 
+  -s [service name]
+  -d [directory input]
+  -f [files]
+  -o [output dir, default protoc-output -> default protoc-output/bookclub/python ...]
+  -c [connection ip+port]
+
+protoc-polyglot list
+
+protoc-polyglot python file.yml

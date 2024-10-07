@@ -27,18 +27,20 @@ RUN pip install conan==${CONAN_VERSION} &&\
     rm -rf /opt/protobuf/lib &&\
     rm -rf /opt/grpc/lib &&\
     ln -s /opt/protobuf/bin/protoc /usr/bin/protoc &&\
-    ln -s /opt/grpc/bin/grpc_python_plugin /usr/bin/grpc_python_plugin &&\
-    ln -s /opt/grpc/bin/grpc_csharp_plugin /usr/bin/grpc_csharp_plugin &&\
-    ln -s /opt/grpc/bin/grpc_cpp_plugin /usr/bin/grpc_cpp_plugin
-# location: /opt/protobuf /opt/grpc
+    mkdir /opt/csharp &&\
+    ln -s /opt/grpc/bin/grpc_csharp_plugin /opt/csharp/grpc_csharp_plugin &&\
+    mkdir /opt/cpp &&\
+    ln -s /opt/grpc/bin/grpc_cpp_plugin /opt/cpp/grpc_cpp_plugin &&\
+    mkdir /opt/python &&\
+    ln -s /opt/grpc/bin/grpc_python_plugin /opt/python/grpc_python_plugin
+# location: /opt/protobuf /opt/grpc /opt/csharp /opt/cpp /opt/python
 
 # protoc java
 ARG PROTOC_JAVA_VER=1.58.0
 RUN mkdir java; cd java &&\
     wget https://repo1.maven.org/maven2/io/grpc/protoc-gen-grpc-java/${PROTOC_JAVA_VER}/protoc-gen-grpc-java-${PROTOC_JAVA_VER}-linux-x86_64.exe &&\
     mv protoc-gen-grpc-java-${PROTOC_JAVA_VER}-linux-x86_64.exe protoc-gen-grpc-java &&\
-    chmod +x protoc-gen-grpc-java &&\
-    ln -s /opt/java/protoc-gen-grpc-java /usr/bin/protoc-gen-grpc-java
+    chmod +x protoc-gen-grpc-java
 # location: /opt/java
 
 # protoc javascript
@@ -51,8 +53,7 @@ RUN mkdir js; cd js &&\
     rm protobuf-javascript-3.21.2-linux-x86_64.tar.gz &&\
     wget https://github.com/grpc/grpc-web/releases/download/${PROTOC_GRPC_JS_VER}/protoc-gen-grpc-web-${PROTOC_GRPC_JS_VER}-linux-x86_64 &&\
     chmod +x protoc-gen-grpc-web-${PROTOC_GRPC_JS_VER}-linux-x86_64 &&\
-    ln -s /opt/js/protoc-gen-grpc-web-${PROTOC_GRPC_JS_VER}-linux-x86_64 /usr/bin/protoc-gen-grpc-web &&\
-    ln -s /opt/js/bin/protoc-gen-js /usr/bin/protoc-gen-js
+    ln -s /opt/js/protoc-gen-grpc-web-${PROTOC_GRPC_JS_VER}-linux-x86_64 /usr/bin/protoc-gen-grpc-web
 # location: /opt/js
 
 ## protoc-gen-doc

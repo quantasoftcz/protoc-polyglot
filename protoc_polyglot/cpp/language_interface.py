@@ -6,7 +6,9 @@ from protoc_polyglot.cli import *
 from glob import glob
 
 
-class Lang_UI(Base_UI):
+class LanguageInterface(CommonInterface):
+    plugin_name = 'grpc_cpp_plugin'
+
     def _compile(self, dir_protos:str, dir_output: str, files:list[str]) -> None:
         dir_src = join(dir_output, 'src')
         dir_include = join(dir_output, 'include')
@@ -17,7 +19,7 @@ class Lang_UI(Base_UI):
         os.makedirs(dir_include, exist_ok=True)
 
         com = f'protoc -I {dir_protos} \
-        --plugin=protoc-gen-grpc={self.settings.plugin_path_cpp} \
+        --plugin=protoc-gen-grpc={self.get_plugin_executable_path()} \
         --grpc_out={dir_src} \
         --cpp_out={dir_src} \
         {" ".join(files)}'
@@ -34,6 +36,3 @@ class Lang_UI(Base_UI):
             shutil.move(path, newpath)
 
         return ret
-
-if __name__ == '__main__':
-    Fire(Lang_UI)

@@ -1,5 +1,8 @@
-bookclub:
-  files:
-    - bookclub/book.proto
-    - bookclub/member.proto
-    - bookclub/bookclub.proto
+
+services:
+  bookclub:
+    files:
+      - bookclub/book.proto
+      - bookclub/member.proto
+      - bookclub/bookclub.proto
+    lang: ["cpp", "cs"]
