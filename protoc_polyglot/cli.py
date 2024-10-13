@@ -44,11 +44,10 @@ def main():
     print(f"Output Directory: {args.output_dir}")
 
     for language in args.languages:
-        # try:
         function = 'protoc'
 
         if run_mode == Run_mode.PYPI:
-            setup_module = importlib.import_module('protoc_polyglot.' + language + '.cli', package="protoc-polyglot")
+            setup_module = importlib.import_module('protoc_polyglot.' + language + '.language_interface', package="protoc-polyglot")
             LanguageInterface = getattr(setup_module, 'LanguageInterface')
             settings = Settings('plugins', DATA_DIR='', CORE_DIR=dirname(abspath(__file__)))
             LanguageInterface = LanguageInterface(settings)
@@ -74,10 +73,6 @@ def main():
             fc(args.service_name)
         else:
             print(f"Function '{function}' not found in '{language}.cli'")
-        # except ModuleNotFoundError:
-        #     print(f"Language '{language}' not found.")
-        # except Exception as e:
-        #     print(f"An error occurred: {str(e)}")
 
 if __name__ == '__main__':
     main()

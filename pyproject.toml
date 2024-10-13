@@ -14,7 +14,7 @@ include = [
 
 [project]
 name = "protoc_polyglot"
-version = "0.0.1-83"
+version = "0.0.1-86"
 license = { text = "MIT License" }
 authors = [
     { name = "Milan Pultar", email = "milan.pultar@gmail.com" },
