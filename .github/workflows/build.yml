@@ -18,11 +18,11 @@ jobs:
     - name: Setup a version
       run: echo "Tag=$(date +%s)" >> $GITHUB_ENV
     - name: Build the base Docker image
-      run: docker build -t protoc-polyglot-x64:$Tag -f docker/protoc-polyglot-x64.dockerfile .
+      run: docker build -t protocpolyglot/protoc-polyglot:$Tag -f docker/protoc-polyglot-x64.dockerfile .
     - name: Build the server Docker image # This should be a separate job, but we do not upload the base image
       run: docker build -t protoc-polyglot-server-x64:$Tag --build-arg base_image_tag=$Tag -f docker/protoc-polyglot-server-x64.dockerfile .
     - name: Tag docker image
-      run: docker tag protoc-polyglot-x64:$Tag protoc-polyglot-x64:1.54.3
+      run: docker tag protocpolyglot/protoc-polyglot:$Tag protocpolyglot/protoc-polyglot
     - name: Test single service python
       run: eval "$DOCKER_RUN --languages python --service-yml /data/protos/services.yml"
     - name: Output check
