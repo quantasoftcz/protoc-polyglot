@@ -14,7 +14,7 @@ include = [
 
 [project]
 name = "protoc_polyglot"
-version = "0.0.1-75"
+version = "0.0.1-83"
 license = { text = "MIT License" }
 authors = [
     { name = "Milan Pultar", email = "milan.pultar@gmail.com" },
@@ -43,4 +43,4 @@ Issues = "https://protopolyglot.youtrack.cloud/issues"
 universal = 1
 
 [project.scripts]
-protoc-polyglot = "protoc_polyglot.wrapper:main"
+protoc-polyglot = "protoc_polyglot.cli:main"

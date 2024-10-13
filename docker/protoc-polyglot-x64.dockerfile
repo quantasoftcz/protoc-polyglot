@@ -98,3 +98,5 @@ ENV PATH="$PATH:/root/go/bin:/core:/protoc_polyglot"
 COPY protoc_polyglot /protoc_polyglot
 
 WORKDIR /protoc_polyglot
+
+ENTRYPOINT ["./cli.py"]
