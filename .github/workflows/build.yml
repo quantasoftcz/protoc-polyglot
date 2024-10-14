@@ -29,6 +29,8 @@ jobs:
       run: eval "bash $GITHUB_WORKSPACE/tests/run.sh"
     - name: Output check
       run: |
+        ls
+        pwd
         ls output/python/bookclub
         ls output/js
 
