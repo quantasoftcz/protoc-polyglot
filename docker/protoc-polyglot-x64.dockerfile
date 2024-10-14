@@ -1,4 +1,4 @@
-# build: docker build -t protocpolyglot/protoc-polyglot:1.54.3 -f protoc-polyglot-x64.dockerfile ..; docker tag protocpolyglot/protoc-polyglot:1.54.3 protocpolyglot/protoc-polyglot
+# build: docker build -t protocpolyglot/protoc-polyglot:1.65.0 -f protoc-polyglot-x64.dockerfile ..; docker tag protocpolyglot/protoc-polyglot:1.65.0 protocpolyglot/protoc-polyglot
 # peek: docker run --rm -v $(pwd)/core:/core -it -v $(pwd)/output:/data/output -v $(pwd)/samples:/data/protos protocpolyglot/protoc-polyglot bash
 FROM ubuntu:22.04
 
@@ -13,9 +13,9 @@ WORKDIR /opt
 # grpc
 ARG CONAN_VERSION=2.6.0
 ENV CONAN_VERSION=$CONAN_VERSION
-ARG GRPC_VERSION=1.54.3
+ARG GRPC_VERSION=1.65.0
 ENV GRPC_VERSION=$GRPC_VERSION
-ARG PROTOBUF_VERSION=3.21.12
+ARG PROTOBUF_VERSION=5.27.0
 ENV PROTOBUF_VERSION=$PROTOBUF_VERSION
 RUN pip install conan==${CONAN_VERSION} &&\
     conan profile detect &&\
