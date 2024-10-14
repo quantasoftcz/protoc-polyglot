@@ -2,8 +2,6 @@
 
 alias DOCKER_RUN='docker run --rm -v $GITHUB_WORKSPACE/output:/data/output -v $(pwd)/tests:/data/tests -v $GITHUB_WORKSPACE/samples:/data/protos protocpolyglot/protoc-polyglot'
 
-pushd /core
-
 for folder in /data/protoc_polyglot/*; do
     echo $folder
     folder=${folder%/}  # Remove trailing slash
@@ -12,5 +10,3 @@ for folder in /data/protoc_polyglot/*; do
         DOCKER_RUN --languages $folder --service-yml /data/protos/services.yml
     fi
 done
-
-popd
