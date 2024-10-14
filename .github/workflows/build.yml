@@ -29,9 +29,12 @@ jobs:
       run: eval "bash $GITHUB_WORKSPACE/tests/run.sh"
     - name: Output check
       run: |
-        ls
-        pwd
         echo $GITHUB_WORKSPACE
+        echo "AAAAA"
+        ls /home/runner/work/protoc-polyglot/protoc-polyglot
+        echo "BBBBB"
+        ls /home/runner/work/protoc-polyglot/protoc-polyglot/protoc_polyglot
+        echo "CCCCC"
         ls output/python/bookclub
         ls output
         ls output/js
