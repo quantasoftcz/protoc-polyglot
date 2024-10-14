@@ -53,7 +53,7 @@ RUN mkdir js; cd js &&\
     rm protobuf-javascript-3.21.2-linux-x86_64.tar.gz &&\
     wget https://github.com/grpc/grpc-web/releases/download/${PROTOC_GRPC_JS_VER}/protoc-gen-grpc-web-${PROTOC_GRPC_JS_VER}-linux-x86_64 &&\
     chmod +x protoc-gen-grpc-web-${PROTOC_GRPC_JS_VER}-linux-x86_64 &&\
-    ln -s /opt/js/protoc-gen-grpc-web-${PROTOC_GRPC_JS_VER}-linux-x86_64 /usr/bin/protoc-gen-grpc-web
+    ln -s /opt/js/protoc-gen-grpc-web-${PROTOC_GRPC_JS_VER}-linux-x86_64 /opt/js/protoc-gen-grpc-web
 # location: /opt/js
 
 ## protoc-gen-doc

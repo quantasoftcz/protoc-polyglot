@@ -5,6 +5,8 @@ from protoc_polyglot.cli import *
 
 
 class LanguageInterface(CommonInterface):
+    plugin_name = 'protoc-gen-grpc-web'
+
     def _compile(self, dir_protos:str, dir_output: str, files:list[str]) -> None:
         shutil.rmtree(dir_output, ignore_errors=True)
         os.makedirs(dir_output, exist_ok=False)
