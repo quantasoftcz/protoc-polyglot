@@ -1,6 +1,6 @@
 #!/bin/bash
 
-alias DOCKER_RUN='docker run --rm -v $GITHUB_WORKSPACE/output:/data/output -v $(pwd)/tests:/data/tests -v $GITHUB_WORKSPACE/samples:/data/protos protocpolyglot/protoc-polyglot'
+alias DOCKER_RUN="docker run --rm -v $GITHUB_WORKSPACE/output:/data/output -v $GITHUB_WORKSPACE/tests:/data/tests -v $GITHUB_WORKSPACE/samples:/data/protos protocpolyglot/protoc-polyglot"
 
 for folder in /data/protoc_polyglot/*; do
     echo $folder

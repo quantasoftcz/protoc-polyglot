@@ -31,6 +31,7 @@ jobs:
       run: |
         ls
         pwd
+        echo $GITHUB_WORKSPACE
         ls output/python/bookclub
         ls output/js
 
