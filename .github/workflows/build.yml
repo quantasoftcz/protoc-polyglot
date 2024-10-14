@@ -33,6 +33,7 @@ jobs:
         pwd
         echo $GITHUB_WORKSPACE
         ls output/python/bookclub
+        ls output
         ls output/js
 
 #  build_server:
