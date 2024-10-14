@@ -25,6 +25,8 @@ jobs:
       run: docker tag protocpolyglot/protoc-polyglot:$Tag protocpolyglot/protoc-polyglot
     - name: Test single service python
       run: eval "$DOCKER_RUN --languages python --service-yml /data/protos/services.yml"
+    - name: Test protoc command
+      run: eval "bash /data/tests/run.sh"
     - name: Output check
       run: |
         ls output/python/bookclub
