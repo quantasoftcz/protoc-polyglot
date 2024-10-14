@@ -9,6 +9,6 @@ for folder in $GITHUB_WORKSPACE/protoc_polyglot/*; do
     folder=${folder%/}  # Remove trailing slash
     if [ -d "$folder" ] && [ "$(basename "$folder")" != "__pycache__" ]; then
         echo "Processing folder: $folder"
-        DOCKER_RUN --languages $folder --service-yml /data/protos/services.yml
+        DOCKER_RUN --languages $(basename $folder) --service-yml /data/protos/services.yml
     fi
 done
