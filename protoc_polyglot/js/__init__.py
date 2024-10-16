@@ -1,1 +1,1 @@
-from .cli import LanguageInterface as cli
+from .language_interface import LanguageInterface as cli

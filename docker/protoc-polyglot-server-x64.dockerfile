@@ -1,7 +1,7 @@
 # build: docker build -t protoc-polyglot-server-x64:1.54.3 -f protoc-polyglot-server-x64.dockerfile .
 # run: docker run -it --rm -p 8000:8000 -v [path to protoc-polyglot]:/workspace protoc-polyglot-server-x64:1.54.3
 ARG base_image_tag=1.54.3
-FROM protoc-polyglot-x64:$base_image_tag
+FROM protocpolyglot/protoc-polyglot:$base_image_tag
 
 # setup envirnment
 WORKDIR /env

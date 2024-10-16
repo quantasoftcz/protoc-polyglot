@@ -4,8 +4,9 @@ from os.path import dirname, basename, abspath, join
 from fire import Fire
 from zipfile import ZipFile
 import requests
-from settings import Settings
-from tools import Tools
+
+from protoc_polyglot.tools import Tools
+from protoc_polyglot.settings import *
 
 
 class CommonInterface:

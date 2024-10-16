@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from fire import Fire
 import importlib
+import sys
 import os
 from os.path import abspath
 from os.path import dirname
@@ -15,11 +16,10 @@ class Run_mode(Enum):
 # import of core is different based on whether we run in PyPi package or in Docker
 run_mode = Run_mode.DOCKER if os.path.abspath(__file__) == '/protoc_polyglot/cli.py' else Run_mode.PYPI
 
-if run_mode == Run_mode.PYPI:
-    from protoc_polyglot.common_interface import *
-else:
-    from common_interface import *
+if run_mode == Run_mode.DOCKER:
+    sys.path.append('/')
 
+from protoc_polyglot.common_interface import *
 
 def main():
     parser = argparse.ArgumentParser(description="Process protoc-polyglot command-line arguments.")
@@ -44,40 +44,35 @@ def main():
     print(f"Output Directory: {args.output_dir}")
 
     for language in args.languages:
-        try:
-            function = 'protoc'
+        function = 'protoc'
 
-            if run_mode == Run_mode.PYPI:
-                setup_module = importlib.import_module('protoc_polyglot.' + language + '.cli', package="protoc-polyglot")
-                LanguageInterface = getattr(setup_module, 'LanguageInterface')
-                settings = Settings('plugins', DATA_DIR='', CORE_DIR=dirname(abspath(__file__)))
-                LanguageInterface = LanguageInterface(settings)
-            else:
-                module_dir = os.path.join(os.path.dirname(__file__), language)
+        if run_mode == Run_mode.PYPI:
+            setup_module = importlib.import_module('protoc_polyglot.' + language + '.language_interface', package="protoc-polyglot")
+            LanguageInterface = getattr(setup_module, 'LanguageInterface')
+            settings = Settings('plugins', DATA_DIR='', CORE_DIR=dirname(abspath(__file__)))
+            LanguageInterface = LanguageInterface(settings)
+        else:
+            module_dir = os.path.join(os.path.dirname(__file__), language)
 
-                sys.path.insert(0, module_dir)
+            sys.path.insert(0, module_dir)
 
-                module_path = os.path.join(module_dir, 'language_interface.py')
+            module_path = os.path.join(module_dir, 'language_interface.py')
 
-                spec = importlib.util.spec_from_file_location('cli', module_path)
-                setup_module = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(setup_module)
+            spec = importlib.util.spec_from_file_location('cli', module_path)
+            setup_module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(setup_module)
 
-                LanguageInterface = getattr(setup_module, 'LanguageInterface')
-                settings = Settings(language)
-                LanguageInterface = LanguageInterface(settings)
+            LanguageInterface = getattr(setup_module, 'LanguageInterface')
+            settings = Settings(language)
+            LanguageInterface = LanguageInterface(settings)
 
-                sys.path.pop(0)
+            sys.path.pop(0)
 
-            if hasattr(LanguageInterface, function):
-                fc = getattr(LanguageInterface, function)
-                fc(args.service_name)
-            else:
-                print(f"Function '{function}' not found in '{language}.cli'")
-        except ModuleNotFoundError:
-            print(f"Language '{language}' not found.")
-        # except Exception as e:
-        #     print(f"An error occurred: {str(e)}")
+        if hasattr(LanguageInterface, function):
+            fc = getattr(LanguageInterface, function)
+            fc(args.service_name)
+        else:
+            print(f"Function '{function}' not found in '{language}.cli'")
 
 if __name__ == '__main__':
     main()

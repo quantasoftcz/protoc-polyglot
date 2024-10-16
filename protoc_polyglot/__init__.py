@@ -1,1 +1,1 @@
-from .cli import CommonInterface as cli
+from .common_interface import CommonInterface as cli
