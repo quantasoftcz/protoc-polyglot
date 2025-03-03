@@ -1,4 +1,5 @@
 from os.path import join
+from os import environ
 
 
 class Settings:
@@ -8,7 +9,8 @@ class Settings:
                  grpc_version="1.54.3",
                  protobuf_version="3.21.12",
                  DATA_DIR='/data',
-                 CORE_DIR='/protoc-polyglot'):
+                 CORE_DIR='/protoc-polyglot',
+                 protoc_binary='protoc'):
         self.language = language
 
         self.plugins_base_path = plugins_base_path
@@ -28,3 +30,5 @@ class Settings:
         self.DOC_OUTPUT_DIR = join(self.OUTPUT_ROOT, 'doc')
 
         self.services_yaml = join(self.ROOT_PROTOS, 'services.yml')
+
+        self.protoc_binary = environ.get('PROTOC_PYTHON') if environ.get('PROTOC_PYTHON') else protoc_binary

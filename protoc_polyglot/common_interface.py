@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-import os, sys, shutil, yaml
+import os, sys, shutil, yaml, builtins
+from abc import abstractclassmethod
 from os.path import dirname, basename, abspath, join
 from fire import Fire
 from zipfile import ZipFile
@@ -7,10 +8,11 @@ import requests
 
 from protoc_polyglot.tools import Tools
 from protoc_polyglot.settings import *
+from abc import ABC, abstractmethod # for abstract class
 
 
-class CommonInterface:
-    def __init__(self, settings: Settings=None):
+class CommonInterface(ABC):
+    def __init__(self, settings: Settings = None):
         self.settings = settings
 
     def get_plugin_executable_path(self):
@@ -115,3 +117,7 @@ class CommonInterface:
                 print(com)
                 os.system(com)
         print(f'\ndone, docs saved in {self.settings.DOC_OUTPUT_DIR}')
+
+    @abstractmethod
+    def _compile(self, dir_protos:str, dir_output: str, files: builtins.list[str]) -> None:
+        pass

@@ -1,4 +1,5 @@
 .idea/
 output
-*/venv/
-*/__pycache__/
+**/.venv/
+**/__pycache__/
+api-server/tmp/

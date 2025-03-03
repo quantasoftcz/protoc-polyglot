@@ -8,18 +8,7 @@ from os.path import dirname
 import argparse
 from enum import Enum
 
-
-class Run_mode(Enum):
-    DOCKER = 1
-    PYPI = 2
-
-# import of core is different based on whether we run in PyPi package or in Docker
-run_mode = Run_mode.DOCKER if os.path.abspath(__file__) == '/protoc_polyglot/cli.py' else Run_mode.PYPI
-
-if run_mode == Run_mode.DOCKER:
-    sys.path.append('/')
-
-from protoc_polyglot.common_interface import *
+from protoc_polyglot.interface_loader import get_language_interface
 
 def main():
     parser = argparse.ArgumentParser(description="Process protoc-polyglot command-line arguments.")
@@ -46,30 +35,10 @@ def main():
     for language in args.languages:
         function = 'protoc'
 
-        if run_mode == Run_mode.PYPI:
-            setup_module = importlib.import_module('protoc_polyglot.' + language + '.language_interface', package="protoc-polyglot")
-            LanguageInterface = getattr(setup_module, 'LanguageInterface')
-            settings = Settings('plugins', DATA_DIR='', CORE_DIR=dirname(abspath(__file__)))
-            LanguageInterface = LanguageInterface(settings)
-        else:
-            module_dir = os.path.join(os.path.dirname(__file__), language)
+        language_interface = get_language_interface(language)
 
-            sys.path.insert(0, module_dir)
-
-            module_path = os.path.join(module_dir, 'language_interface.py')
-
-            spec = importlib.util.spec_from_file_location('cli', module_path)
-            setup_module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(setup_module)
-
-            LanguageInterface = getattr(setup_module, 'LanguageInterface')
-            settings = Settings(language)
-            LanguageInterface = LanguageInterface(settings)
-
-            sys.path.pop(0)
-
-        if hasattr(LanguageInterface, function):
-            fc = getattr(LanguageInterface, function)
+        if hasattr(language_interface, function):
+            fc = getattr(language_interface, function)
             fc(args.service_name)
         else:
             print(f"Function '{function}' not found in '{language}.cli'")

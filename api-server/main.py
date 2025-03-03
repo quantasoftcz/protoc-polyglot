@@ -1,4 +1,6 @@
 import sys, os
+
+from exceptiongroup import catch
 from fastapi import FastAPI, HTTPException, status
 from fastapi import File, UploadFile
 from fastapi.responses import FileResponse
@@ -16,13 +18,15 @@ from shutil import rmtree
 from os.path import isdir, join
 
 sys.path.insert(0, os.path.abspath('..'))
-import core.python.cli
+from protoc_polyglot.interface_loader import get_language_interface, run_mode, RunMode
 
 app = FastAPI()
 
 supported_languages = ['cpp', 'python']
-work_dir = '/workspace/tmp/'
 
+work_dir = 'tmp/'
+if run_mode == RunMode.DOCKER:
+    work_dir = '/workspace/tmp/'
 
 def extract_zip_file(file: UploadFile) -> str:
     name = ''.join(random.choices(string.ascii_lowercase + string.digits, k=10))
@@ -47,6 +51,7 @@ def extract_zip_file(file: UploadFile) -> str:
 
 
 def clean_dir(dir: str):
+    # pass
     rmtree(dir)
 
 
@@ -63,9 +68,12 @@ async def compile_type(language: str, file: UploadFile):
     if '.zip' not in file.filename:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Unsupported file format")
 
-    dir_name = extract_zip_file(file)
-    ui = core.python.cli.LanguageInterface()
-    zip_file = ui.make(dir_name)
+    try:
+        dir_name = extract_zip_file(file)
+        ui = get_language_interface(language)
+        zip_file = ui.make(dir_name)
+    except RuntimeError:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Can't compile files")
 
     return FileResponse(zip_file, media_type='application/zip', filename="output.zip", background=BackgroundTask(clean_dir, dir_name))
 
@@ -73,4 +81,4 @@ async def compile_type(language: str, file: UploadFile):
 if __name__ == "__main__":
     if not os.path.exists(work_dir):
         os.makedirs(work_dir)
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True, reload_dirs=['../core'])
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True, reload_dirs=['../protoc_polyglot'])

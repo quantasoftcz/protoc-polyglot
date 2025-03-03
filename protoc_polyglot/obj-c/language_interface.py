@@ -2,14 +2,14 @@
 import os, sys
 
 sys.path.insert(0, os.path.abspath('..'))
-from protoc_polyglot.cli import *
+from protoc_polyglot.common_interface import *
 
 class LanguageInterface(CommonInterface):
     def _compile(self, dir_protos: str, dir_output: str, files: list[str]) -> None:
         shutil.rmtree(dir_output, ignore_errors=True)
         os.makedirs(dir_output, exist_ok=False)
         
-        com = f"""/usr/bin/protoc \
+        com = f"""{self.settings.protoc_binary} \
                 --proto_path {dir_protos} \
                 --objc_out={dir_output} \
                 {" ".join(files)}"""

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import os, sys
 sys.path.insert(0, os.path.abspath('..'))
-from protoc_polyglot.cli import *
+from protoc_polyglot.common_interface import *
 
 
 class LanguageInterface(CommonInterface):
@@ -9,7 +9,7 @@ class LanguageInterface(CommonInterface):
         shutil.rmtree(dir_output, ignore_errors=True)
         os.makedirs(dir_output, exist_ok=False)
 
-        com = f"""/usr/bin/protoc \
+        com = f"""{self.settings.protoc_binary} \
         --proto_path {dir_protos} \
         --php_out={dir_output} \
         {" ".join(files)}"""

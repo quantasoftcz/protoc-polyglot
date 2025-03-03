@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import os, sys
 sys.path.insert(0, os.path.abspath('..'))
-from protoc_polyglot.cli import *
+from protoc_polyglot.common_interface import *
 
 
 class LanguageInterface(CommonInterface):
@@ -12,7 +12,7 @@ class LanguageInterface(CommonInterface):
         os.makedirs(dir_output, exist_ok=True)
         print(f'mkdir {dir_output}')
 
-        com = f'protoc -I {dir_protos} \
+        com = f'{self.settings.protoc_binary} -I {dir_protos} \
         --plugin=protoc-gen-grpc_java={self.get_plugin_executable_path()} \
         --grpc_java_out={dir_output} \
         --java_out={dir_output} \
